@@ -32,6 +32,8 @@ public class MatchIT extends GameEngine{
 	 * Level 1
 	 */
 	
+	int score; //The value which will hold the score, also be used for ScoreScreen
+	
 	public void updateLevel1() {
 		
 	}

@@ -1,3 +1,4 @@
+import java.awt.event.MouseEvent;
 
 public class MatchIT extends GameEngine{
 	public static void main(String agrs[]) {
@@ -93,6 +94,30 @@ public class MatchIT extends GameEngine{
 			
 		}
 		
+	}
+	
+	/*
+	 * All mouse Events needed
+	 */
+	
+	// Called whenever a mouse button is clicked
+	// (pressed and released in the same position)
+	public void mouseClicked(MouseEvent event) {}
+
+	
+	// Called whenever a mouse button is pressed
+	public void mousePressed(MouseEvent event) {
 		
 	}
+
+	// Called whenever a mouse button is released
+	public void mouseReleased(MouseEvent event) {
+		
+	}
+	
+	// Called whenever the mouse is moved with the mouse button held down
+	public void mouseDragged(MouseEvent event) {
+		
+	}
+	
 }

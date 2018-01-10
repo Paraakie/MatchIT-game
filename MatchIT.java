@@ -49,7 +49,15 @@ public class MatchIT extends GameEngine{
 	}
 	
 	public void drawScoreScreen() {
-		
+		changeColor(black);
+		drawText(width()/2-165, height()/2, "Final Score: " +score, "Arial", 50);
+		if(score <= 0) {
+			drawText(width()/2-185, height()/2+80, "Better Luck next time", "Arial", 40);
+		} else if(score >= 30) {
+			drawText(width()/2-95, height()/2+80, "You Win!", "Arial", 40);
+		} else {
+			drawText(width()/2-100, height()/2+80, "Try again!", "Arial", 40);
+		}
 	}
 	
 	// Initialise all global values here

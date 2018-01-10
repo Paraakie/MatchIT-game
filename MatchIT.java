@@ -1,3 +1,7 @@
+/* Assignmet 2, 159.103
+ * Chad Finch, 
+ * Sven Gerahrds
+ */
 import java.awt.event.MouseEvent;
 
 public class MatchIT extends GameEngine{

@@ -40,7 +40,7 @@ public class MatchIT extends GameEngine{
 	 */
 	
 	public void updateScoreScreen() {
-		//Usesful?
+		
 	}
 	
 	public void drawScoreScreen() {
@@ -57,21 +57,34 @@ public class MatchIT extends GameEngine{
 	// Main Update Function
 	@Override
 	public void update(double dt) {
-		// TODO Auto-generated method stub
+		if(currentLevel == "menu") { // Main Menu
+			updateMenu();
 		
+		} else if(currentLevel == "lvl1") { //Level 1
+			updateLevel1();
+		
+		} else if(currentLevel == "score") { // Final Score Screen
+			updateScoreScreen();
+		
+		} else {
+			/* This will only happen if currentLevel was changed to a wrong value
+			 * Thus this an error
+			 */
+			
+		}
 	}
 	
 	// Main Draw Function, for graphical content
 	@Override
 	public void paintComponent() {
-		if(currentLevel == "menu") {
-			updateMenu();
+		if(currentLevel == "menu") { // Main Menu
+			drawMenu();
 		
-		} else if(currentLevel == "lvl1") {
-			updateLevel1();
+		} else if(currentLevel == "lvl1") { //Level 1
+			drawLevel1();
 		
-		} else if(currentLevel == "score") {
-			updateScoreScreen();
+		} else if(currentLevel == "score") { // Final Score Screen
+			drawScoreScreen();
 		
 		} else {
 			/* This will only happen if currentLevel was changed to a wrong value

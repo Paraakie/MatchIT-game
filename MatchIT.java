@@ -92,6 +92,9 @@ public class MatchIT extends GameEngine{
 	// Main Draw Function, for graphical content
 	@Override
 	public void paintComponent() {
+		//Resize the window
+		setWindowSize(800,500);
+		
 		if(currentLevel == "menu") { // Main Menu
 			drawMenu();
 		

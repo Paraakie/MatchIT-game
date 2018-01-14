@@ -15,6 +15,8 @@ public class MatchIT extends GameEngine{
 	 * score = Final score screen
 	 */
 	String currentLevel;
+	AudioClip backgroundMusic;
+	AudioClip menuMusic;
 	
 	/*
 	 * Main Menu
@@ -25,7 +27,8 @@ public class MatchIT extends GameEngine{
 	}
 	
 	public void drawMenu() {
-		
+		changeBackgroundColor(black);
+		clearBackground(width(), height());
 	}
 	
 	/*
@@ -38,8 +41,37 @@ public class MatchIT extends GameEngine{
 		
 	}
 	
+	double circle1X, circle1Y, circle1R;
+	double rect1X, rect1Y, rect1Width, rect1Height;
+	double diam1X, diam1Y, diam1Width, diam1Height;
+	double rect2X, rect2Y, rect2Width, rect2Height;
 	public void drawLevel1() {
-		
+		changeBackgroundColor(black);
+		clearBackground(width(), height());
+		changeColor(green);
+		drawSolidCircle(circle1X, circle1Y, circle1R);
+		drawSolidCircle(circle1X-600 , circle1Y-330, circle1R);
+		changeColor(blue);
+		drawSolidRectangle(rect1X, rect1Y, rect1Width, rect1Height);
+		drawSolidRectangle(rect1X-200, rect1Y-320, rect1Width, rect1Height);
+		changeColor(red);
+		saveCurrentTransform();
+		translate(350, 380);
+		rotate(45);
+		drawSolidRectangle(diam1X, diam1Y, diam1Width, diam1Height);
+		restoreLastTransform();
+		changeColor(purple);
+		drawSolidRectangle(rect2X, rect2Y, rect2Width, rect2Height);
+		drawSolidRectangle(rect2X+560, rect2Y-320, rect2Width, rect2Height);
+		changeColor(red);
+		saveCurrentTransform();
+		translate(480, 60);
+		rotate(45);
+		drawSolidRectangle(-15, -15, diam1Width, diam1Height);
+		restoreLastTransform();
+		changeColor(white);
+		drawText(750, 40, "" + score);
+		drawText(250, 350, "Match the shapes!");
 	}
 	
 	/*
@@ -65,8 +97,21 @@ public class MatchIT extends GameEngine{
 	// Initialise all global values here
 	@Override
 	public void init() {
+		currentLevel = "lvl1";
+		circle1X = 730; circle1Y = 430; circle1R = 50;
+		rect1X = 480; rect1Y = 380; rect1Width = 100; rect1Height = 100;
+		diam1X = -15; diam1Y = -15; diam1Width = 90; diam1Height = 90;
+		rect2X = 50; rect2Y = 380; rect2Width = 150; rect2Height = 100;
+		score = 0;
 		//Player starts in the menu
-		currentLevel = "menu";
+		backgroundMusic = loadAudio("Audio/background.wav");
+		menuMusic = loadAudio("Audio/menu.wav");
+		if(currentLevel == "menu"){
+			startAudioLoop(menuMusic);
+		}
+		if(currentLevel == "lvl1"){
+			startAudioLoop(backgroundMusic);
+		}
 	}
 	
 	// Main Update Function

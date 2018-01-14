@@ -133,6 +133,9 @@ public class MatchIT extends GameEngine{
 		if(currentLevel == "lvl1"){
 			startAudioLoop(backgroundMusic);
 		}
+		
+		//Load images for lvl1
+		initLevel1(); 
 	}
 	
 	// Main Update Function

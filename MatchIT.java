@@ -37,6 +37,27 @@ public class MatchIT extends GameEngine{
 	
 	int score; //The value which will hold the score, also be used for ScoreScreen
 	
+	//All Images for Lvl1
+	Image heartImage, 
+		  squareImage, 
+		  triangleImage, 
+		  circleImage, 
+		  background; 
+	
+	//load all images here
+	public void initLevel1() {
+		//heart
+		heartImage = loadImage("images_farm\\heart.png"); 
+		//square
+		squareImage = loadImage("images_farm\\box1.png"); 
+		//triangle
+		triangleImage = loadImage("images_farm\\triangle.png"); 
+		//circle
+		circleImage = loadImage("images_farm\\coin.png"); 
+		//background
+		background = loadImage("images_farm\\background.png"); 
+	}
+	
 	public void updateLevel1() {
 		
 	}

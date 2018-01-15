@@ -12,9 +12,10 @@ public class MatchIT extends GameEngine{
 	/* Global string to switch between levels/menu/winScreen
 	 * menu =  Main-menu
 	 * lvl1 = First level
-	 * score = Final score screen
+	 * gameOver = Game Over screen
 	 */
 	String currentLevel;
+	
 	AudioClip backgroundMusic;
 	AudioClip menuMusic;
 	
@@ -35,14 +36,20 @@ public class MatchIT extends GameEngine{
 	 * Level 1
 	 */
 	
-	int score; //The value which will hold the score, also be used for ScoreScreen
+	double circle1X, circle1Y, circle1R;
+	double rect1X, rect1Y, rect1Width, rect1Height;
+	double diam1X, diam1Y, diam1Width, diam1Height;
+	double rect2X, rect2Y, rect2Width, rect2Height;
+	
+	int score; //The value which will hold the score, also be used for gameOverScreen
 	
 	//All Images for Lvl1
 	Image heartImage, 
-		  squareImage, 
-		  triangleImage, 
-		  circleImage, 
-		  background; 
+		squareImage, 
+		triangleImage, 
+		circleImage, 
+		diamImage,
+		background; 
 	
 	//load all images here
 	public void initLevel1() {
@@ -54,6 +61,8 @@ public class MatchIT extends GameEngine{
 		triangleImage = loadImage("images_farm\\triangle.png"); 
 		//circle
 		circleImage = loadImage("images_farm\\coin.png"); 
+		//diamond
+		diamImage = loadImage("images_farm\\crystal.png");
 		//background
 		background = loadImage("images_farm\\background.png"); 
 	}
@@ -62,48 +71,50 @@ public class MatchIT extends GameEngine{
 		
 	}
 	
-	double circle1X, circle1Y, circle1R;
-	double rect1X, rect1Y, rect1Width, rect1Height;
-	double diam1X, diam1Y, diam1Width, diam1Height;
-	double rect2X, rect2Y, rect2Width, rect2Height;
 	public void drawLevel1() {
 		changeBackgroundColor(black);
 		clearBackground(width(), height());
+		
 		changeColor(green);
 		drawSolidCircle(circle1X, circle1Y, circle1R);
 		drawSolidCircle(circle1X-600 , circle1Y-330, circle1R);
+		
 		changeColor(blue);
 		drawSolidRectangle(rect1X, rect1Y, rect1Width, rect1Height);
 		drawSolidRectangle(rect1X-200, rect1Y-320, rect1Width, rect1Height);
+		
 		changeColor(red);
 		saveCurrentTransform();
 		translate(350, 380);
 		rotate(45);
 		drawSolidRectangle(diam1X, diam1Y, diam1Width, diam1Height);
 		restoreLastTransform();
+		
 		changeColor(purple);
 		drawSolidRectangle(rect2X, rect2Y, rect2Width, rect2Height);
 		drawSolidRectangle(rect2X+560, rect2Y-320, rect2Width, rect2Height);
+		
 		changeColor(red);
 		saveCurrentTransform();
 		translate(480, 60);
 		rotate(45);
 		drawSolidRectangle(-15, -15, diam1Width, diam1Height);
 		restoreLastTransform();
+		
 		changeColor(white);
 		drawText(750, 40, "" + score);
 		drawText(250, 350, "Match the shapes!");
 	}
 	
 	/*
-	 * Final Score Screen
+	 *Game Over Screen
 	 */
 	
-	public void updateScoreScreen() {
+	public void updateGameOverScreen() {
 		
 	}
 	
-	public void drawScoreScreen() {
+	public void drawGameOverScreen() {
 		changeColor(black);
 		drawText(width()/2-165, height()/2, "Final Score: " +score, "Arial", 50);
 		if(score <= 0) {
@@ -118,13 +129,29 @@ public class MatchIT extends GameEngine{
 	// Initialise all global values here
 	@Override
 	public void init() {
-		currentLevel = "lvl1";
-		circle1X = 730; circle1Y = 430; circle1R = 50;
-		rect1X = 480; rect1Y = 380; rect1Width = 100; rect1Height = 100;
-		diam1X = -15; diam1Y = -15; diam1Width = 90; diam1Height = 90;
-		rect2X = 50; rect2Y = 380; rect2Width = 150; rect2Height = 100;
+		currentLevel = "menu"; //Player starts in the menu
+		
+		circle1X = 730; 
+		circle1Y = 430; 
+		circle1R = 50;
+		
+		rect1X = 480; 
+		rect1Y = 380; 
+		rect1Width = 100; 
+		rect1Height = 100;
+		
+		diam1X = -15; 
+		diam1Y = -15; 
+		diam1Width = 90; 
+		diam1Height = 90;
+		
+		rect2X = 50; 
+		rect2Y = 380; 
+		rect2Width = 150; 
+		rect2Height = 100;
+		
 		score = 0;
-		//Player starts in the menu
+		
 		backgroundMusic = loadAudio("Audio/background.wav");
 		menuMusic = loadAudio("Audio/menu.wav");
 		if(currentLevel == "menu"){
@@ -147,14 +174,14 @@ public class MatchIT extends GameEngine{
 		} else if(currentLevel == "lvl1") { //Level 1
 			updateLevel1();
 		
-		} else if(currentLevel == "score") { // Final Score Screen
-			updateScoreScreen();
+		} else if(currentLevel == "gameOver") { // Game Over Screen
+			updateGameOverScreen();
 		
 		} else {
 			/* This will only happen if currentLevel was changed to a wrong value
 			 * Thus this an error
 			 */
-			
+			System.out.println("Error: String 'currentLevel' has an invald name.\n");
 		}
 	}
 	
@@ -170,14 +197,14 @@ public class MatchIT extends GameEngine{
 		} else if(currentLevel == "lvl1") { //Level 1
 			drawLevel1();
 		
-		} else if(currentLevel == "score") { // Final Score Screen
-			drawScoreScreen();
+		} else if(currentLevel == "gameOver") { // Game Over Screen
+			drawGameOverScreen();
 		
 		} else {
 			/* This will only happen if currentLevel was changed to a wrong value
 			 * Thus this an error
 			 */
-			
+			System.out.println("Error: String 'currentLevel' has an invald name.\n");		
 		}
 		
 	}

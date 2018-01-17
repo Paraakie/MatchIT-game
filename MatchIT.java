@@ -24,6 +24,8 @@ public class MatchIT extends GameEngine{
 	
 	AudioClip backgroundMusic;
 	AudioClip menuMusic;
+	AudioClip goodMatch;
+	AudioClip badMatch;
 	
 	
 	//All images for menu
@@ -103,6 +105,9 @@ public class MatchIT extends GameEngine{
 		diamImage = loadImage("images_farm\\crystal.png");
 		//background
 		background = loadImage("images_farm\\background.png"); 
+		
+		goodMatch = loadAudio("Audio/good_match.wav");
+		badMatch = loadAudio("Audio/bad_match.wav");
 	}
 	
 	public void updateLevel1() {
@@ -202,9 +207,6 @@ public class MatchIT extends GameEngine{
 		menuMusic = loadAudio("Audio/menu.wav");
 		if(currentLevel == "menu"){
 			startAudioLoop(menuMusic);
-		}
-		if(currentLevel == "lvl1"){
-			startAudioLoop(backgroundMusic);
 		}
 		
 		//Load images for lvl1
@@ -307,6 +309,9 @@ public class MatchIT extends GameEngine{
 			if(menuOption == 0) {
 				//Start Game
 				currentLevel = "lvl1";
+				stopAudioLoop(menuMusic);
+				startAudioLoop(backgroundMusic);
+				
 			} else if(menuOption == 1) {
 				//Not sure how to mute sound here...
 
@@ -326,6 +331,8 @@ public class MatchIT extends GameEngine{
         if(e.getKeyCode() == KeyEvent.VK_Q ||
                 e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			currentLevel = "menu";
+			stopAudioLoop(backgroundMusic);
+			startAudioLoop(menuMusic);
 		}
     }
 }

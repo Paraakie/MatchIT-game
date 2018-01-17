@@ -3,6 +3,12 @@
  * Sven Gerahrds
  */
 import java.awt.event.MouseEvent;
+import java.awt.event.*;
+import java.awt.image.*;
+import java.io.*;
+import javax.imageio.*;
+import java.awt.*;
+import java.awt.geom.*;
 
 public class MatchIT extends GameEngine{
 	public static void main(String agrs[]) {
@@ -19,6 +25,17 @@ public class MatchIT extends GameEngine{
 	AudioClip backgroundMusic;
 	AudioClip menuMusic;
 	
+	
+	//All images for menu
+	Image play,
+	playHighlighted,
+	mute,
+	muteHighlighted,
+	exit,
+	exitHighlighted;
+	
+	int menuOption = 0;
+	
 	/*
 	 * Main Menu
 	 */
@@ -28,8 +45,29 @@ public class MatchIT extends GameEngine{
 	}
 	
 	public void drawMenu() {
-		changeBackgroundColor(black);
-		clearBackground(width(), height());
+		drawImage(background,0,0, width(), height());
+		
+		//play
+		if(menuOption == 0){
+			drawImage(playHighlighted, 50, 150);
+		}else{
+			drawImage(play, 50, 150);
+		}
+		
+		//Mute
+		if(menuOption == 1) {
+			drawImage(muteHighlighted, 350, 150);
+		} else {
+			drawImage(mute, 350, 150);
+		}
+		
+		//Exit
+		if(menuOption == 2) {
+			drawImage(exitHighlighted, 600, 150);
+		} else {
+			drawImage(exit, 600, 150);
+		}
+		
 	}
 	
 	/*
@@ -45,11 +83,11 @@ public class MatchIT extends GameEngine{
 	
 	//All Images for Lvl1
 	Image heartImage, 
-		squareImage, 
-		triangleImage, 
-		circleImage, 
-		diamImage,
-		background; 
+	squareImage, 
+	triangleImage, 
+	circleImage, 
+	diamImage, 
+	background; 
 	
 	//load all images here
 	public void initLevel1() {
@@ -152,6 +190,14 @@ public class MatchIT extends GameEngine{
 		
 		score = 0;
 		
+		play               = loadImage("Menu/play.png");
+		playHighlighted    = loadImage("Menu/playHighlighted.png");
+		mute            = loadImage("Menu/mute.png");
+		muteHighlighted = loadImage("Menu/muteHighlighted.png");
+		exit               = loadImage("Menu/exit.png");
+		exitHighlighted    = loadImage("Menu/exitHighlighted.png");
+		
+		
 		backgroundMusic = loadAudio("Audio/background.wav");
 		menuMusic = loadAudio("Audio/menu.wav");
 		if(currentLevel == "menu"){
@@ -232,5 +278,55 @@ public class MatchIT extends GameEngine{
 	public void mouseDragged(MouseEvent event) {
 		
 	}
+	
+	//Called whenever a key is pressed
+    public void keyPressed(KeyEvent e) {
+    	if(currentLevel == "menu") {
+    		keyPressedMenu(e);
+    	} else {
+    		keyPressedGame(e);
+    	}
+    }
+
+    //Called whenever a key is pressed in the menu
+    public void keyPressedMenu(KeyEvent e) {
+		//Up Arrow
+		if(e.getKeyCode() == KeyEvent.VK_UP) {
+			if(menuOption > 0) {
+				menuOption--;
+			}
+		}
+		//Down Arrow
+		if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+			if(menuOption < 2) {
+				menuOption++;
+			}
+		}
+		//Enter Key
+		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			if(menuOption == 0) {
+				//Start Game
+				currentLevel = "lvl1";
+			} else if(menuOption == 1) {
+				//Not sure how to mute sound here...
+
+			} else {
+				//Exit
+				System.exit(0);
+			}
+		}
+	}
+	
+
+
+
+	//Called whenever a key is pressed in the game
+    public void keyPressedGame(KeyEvent e) {
+		//In the game
+        if(e.getKeyCode() == KeyEvent.VK_Q ||
+                e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			currentLevel = "menu";
+		}
+    }
 	
 }

@@ -1,5 +1,5 @@
 /* Assignmet 2, 159.103
- * Chad Finch,  test
+ * Chad Finch,
  * Sven Gerahrds
  */
 import java.awt.event.MouseEvent;
@@ -86,7 +86,6 @@ public class MatchIT extends GameEngine{
 	//All Images for Lvl1
 	Image heartImage, 
 	squareImage, 
-	triangleImage, 
 	circleImage, 
 	diamImage, 
 	background; 

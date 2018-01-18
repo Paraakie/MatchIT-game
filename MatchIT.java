@@ -176,6 +176,9 @@ public class MatchIT extends GameEngine{
 	}
 	
 	public void drawGameOverScreen() {
+		// Draw Coins
+		drawCoin();
+				
 		changeColor(black);
 		drawText(width()/2-165, height()/2, "Final Score: " +score, "Arial", 50);
 		if(score <= 0) {
@@ -185,6 +188,76 @@ public class MatchIT extends GameEngine{
 		} else {
 			drawText(width()/2-100, height()/2+80, "Try again!", "Arial", 40);
 		}
+	}
+	
+	/*
+	 * Coin Animation
+	 */
+	
+	// Images for Coin Animation
+	Image[] coinImages = new Image[100]; //currently only 30 needed
+	
+	// Coin Coordinates
+	double coin1_X;
+	double coin2_X;
+	double coin3_X;
+	double coin_Y; //All coins are on the same height
+	
+	// Coin Size; only value because coin's has same value for width&height
+	double coinSize;
+	
+	// Timer and Duration
+	double coinTimer;
+	double coinDuration;
+
+	//used to go through all images thus getting an animation
+	int coinFrame; 
+		
+	public void initCoin() {
+		// String that changes automatically to load all 30 images via loop
+		String imageLocation; 
+		
+		//doubles
+		coinTimer = 0;
+		coinDuration = 1.5;
+		
+		//Load all Sprites
+		for(int i = 0; i < 30; i++) {
+			imageLocation = "animation_bronze_coin\\Bronze_"+(i+1)+".png";
+			coinImages[i] = loadImage(imageLocation);
+		}
+	
+	}
+	
+	public void updateCoin(double dt) {
+		// Increment timer
+		coinTimer += dt;
+
+		// Check to see if explosion has finished
+		if(coinTimer >= coinDuration) {
+			coinTimer = 0;
+		}
+		
+		// Set Coin frame
+		coinFrame = getAnimationFrame(coinTimer, coinDuration, 30);
+	}
+	
+	// Function to get frame of animation
+	public int getAnimationFrame(double timer, double duration, int numFrames) {
+		// Get frame
+		int i = (int)floor(((timer % duration) / duration) * numFrames);
+		// Check range
+		if(i >= numFrames) {
+			i = numFrames-1;
+		}
+		// Return
+		return i;
+	}
+	
+	public void drawCoin() {
+		drawImage(coinImages[coinFrame], coin1_X, coin_Y, coinSize, coinSize);
+		drawImage(coinImages[coinFrame], coin2_X, coin_Y, coinSize, coinSize);
+		drawImage(coinImages[coinFrame], coin3_X, coin_Y, coinSize, coinSize);
 	}
 	
 	// Initialise all global values here
@@ -213,8 +286,15 @@ public class MatchIT extends GameEngine{
 		rect2Width = 150; 
 		rect2Height = 100;
 		
+		coin1_X = 310; 
+		coin2_X = 370;
+		coin3_X = 430; 
+		coin_Y = 150;
+		coinSize = 60;
+		
 		// Integers
 		score = 0;
+		coinFrame = 0;
 		
 		// Audio
 		initAudio();
@@ -226,6 +306,8 @@ public class MatchIT extends GameEngine{
 		initMenu();
 		//Load images for lvl1
 		initLevel1(); 
+		//Load Coin Animation
+		initCoin(); 
 	}
 	
 	// Main Update Function
@@ -239,7 +321,7 @@ public class MatchIT extends GameEngine{
 		
 		} else if(currentLevel == "gameOver") { // Game Over Screen
 			updateGameOverScreen();
-		
+			updateCoin(dt);
 		} else {
 			/* This will only happen if currentLevel was changed to a wrong value
 			 * Thus this an error
@@ -262,7 +344,7 @@ public class MatchIT extends GameEngine{
 		
 		} else if(currentLevel == "gameOver") { // Game Over Screen
 			drawGameOverScreen();
-		
+			drawCoin();
 		} else {
 			/* This will only happen if currentLevel was changed to a wrong value
 			 * Thus this an error

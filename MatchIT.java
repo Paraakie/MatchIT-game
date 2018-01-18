@@ -10,6 +10,12 @@ import javax.imageio.*;
 import java.awt.*;
 import java.awt.geom.*;
 
+/*
+ * Images and Audio used in this project 
+ * are not ours, the license is in same the
+ * folder as the contents are.
+ */
+
 public class MatchIT extends GameEngine{
 	public static void main(String agrs[]) {
 		createGame(new MatchIT());

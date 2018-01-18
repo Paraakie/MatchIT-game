@@ -106,7 +106,7 @@ public class MatchIT extends GameEngine{
 	 * Level 1
 	 */
 	
-	double circle1X, circle1Y, circle1R;
+	double circle1X, circle1Y, circle1Width, circle1Height;
 	double rect1X, rect1Y, rect1Width, rect1Height;
 	double diam1X, diam1Y, diam1Width, diam1Height;
 	double rect2X, rect2Y, rect2Width, rect2Height;
@@ -182,6 +182,8 @@ public class MatchIT extends GameEngine{
 	}
 	
 	public void drawGameOverScreen() {
+		drawImage(background,0,0, width(), height());
+		
 		// Draw Coins
 		drawCoin();
 				
@@ -270,20 +272,21 @@ public class MatchIT extends GameEngine{
 	@Override
 	public void init() {
 		// Strings
-		currentLevel = "menu"; //Player starts in the menu
+		currentLevel = "gameOver"; //Player starts in the menu
 		
 		// Doubles
-		circle1X = 730; 
-		circle1Y = 430; 
-		circle1R = 50;
+		circle1X = 660; 
+		circle1Y = 370; 
+		circle1Width = 110;
+		circle1Height = 110;
 		
 		rect1X = 480; 
 		rect1Y = 380; 
 		rect1Width = 100; 
 		rect1Height = 100;
 		
-		diam1X = -15; 
-		diam1Y = -15; 
+		diam1X = 280; 
+		diam1Y = 380; 
 		diam1Width = 90; 
 		diam1Height = 90;
 		
@@ -291,7 +294,7 @@ public class MatchIT extends GameEngine{
 		rect2Y = 380; 
 		rect2Width = 150; 
 		rect2Height = 100;
-		
+
 		coin1_X = 310; 
 		coin2_X = 370;
 		coin3_X = 430; 
@@ -313,7 +316,7 @@ public class MatchIT extends GameEngine{
 		//Load images for lvl1
 		initLevel1(); 
 		//Load Coin Animation
-		initCoin(); 
+		initCoin();  
 	}
 	
 	// Main Update Function

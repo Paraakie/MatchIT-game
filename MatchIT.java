@@ -22,11 +22,29 @@ public class MatchIT extends GameEngine{
 	 */
 	String currentLevel;
 	
+	/* 
+	 * Audio
+	 */
+	
 	AudioClip backgroundMusic;
 	AudioClip menuMusic;
 	AudioClip goodMatch;
 	AudioClip badMatch;
 	
+	public void initAudio() {
+		// Music
+		backgroundMusic = loadAudio("Audio/background.wav");
+		menuMusic = loadAudio("Audio/menu.wav");
+		
+		// Audio for playable Levels
+		goodMatch = loadAudio("Audio/good_match.wav");
+		badMatch = loadAudio("Audio/bad_match.wav");
+	}
+	
+	
+	/*
+	 * Main Menu
+	 */
 	
 	//All images for menu
 	Image play,
@@ -38,9 +56,15 @@ public class MatchIT extends GameEngine{
 	
 	int menuOption = 0;
 	
-	/*
-	 * Main Menu
-	 */
+	public void initMenu() {
+		// Menu Images
+		play               = loadImage("Menu/play.png");
+		playHighlighted    = loadImage("Menu/playHighlighted.png");
+		mute            = loadImage("Menu/mute.png");
+		muteHighlighted = loadImage("Menu/muteHighlighted.png");
+		exit               = loadImage("Menu/exit.png");
+		exitHighlighted    = loadImage("Menu/exitHighlighted.png");
+	}
 	
 	public void updateMenu() {
 		
@@ -85,28 +109,26 @@ public class MatchIT extends GameEngine{
 	
 	//All Images for Lvl1
 	Image heartImage, 
-	squareImage, 
-	circleImage, 
-	diamImage, 
-	background; 
+	      squareImage, 
+	      circleImage,
+	      diamImage,
+	      triImage, 
+	      background; 
 	
 	//load all images here
 	public void initLevel1() {
-		//heart
-		heartImage = loadImage("images_farm\\heart.png"); 
-		//square
-		squareImage = loadImage("images_farm\\box1.png"); 
-		//triangle
-		triangleImage = loadImage("images_farm\\triangle.png"); 
-		//circle
-		circleImage = loadImage("images_farm\\coin.png"); 
-		//diamond
-		diamImage = loadImage("images_farm\\crystal.png");
 		//background
 		background = loadImage("images_farm\\background.png"); 
-		
-		goodMatch = loadAudio("Audio/good_match.wav");
-		badMatch = loadAudio("Audio/bad_match.wav");
+		//circle
+		circleImage = loadImage("images_farm\\coin.png"); 
+		//square
+		squareImage = loadImage("images_farm\\box1.png"); 
+		//diamond
+		diamImage = loadImage("images_farm\\crystal.png");
+		//triangle
+		triImage = loadImage("images_farm\\triangle.png");
+		//heart
+		heartImage = loadImage("images_farm\\heart.png"); 
 	}
 	
 	public void updateLevel1() {
@@ -114,38 +136,35 @@ public class MatchIT extends GameEngine{
 	}
 	
 	public void drawLevel1() {
-		changeBackgroundColor(black);
-		clearBackground(width(), height());
+		// Background
+		drawImage(background, 0, 0, width(), height());
 		
-		changeColor(green);
-		drawSolidCircle(circle1X, circle1Y, circle1R);
-		drawSolidCircle(circle1X-600 , circle1Y-330, circle1R);
+		// Circles, 2x
+		drawImage(circleImage, circle1X, circle1Y, circle1Width, circle1Height);
+		drawImage(circleImage, circle1X-590, circle1Y-310, circle1Width, circle1Height);
 		
-		changeColor(blue);
-		drawSolidRectangle(rect1X, rect1Y, rect1Width, rect1Height);
-		drawSolidRectangle(rect1X-200, rect1Y-320, rect1Width, rect1Height);
+		// Squares
+		drawImage(squareImage, rect1X, rect1Y, rect1Width, rect1Height);
+		drawImage(squareImage, rect1X-200, rect1Y-320, rect1Width, rect1Height);
 		
-		changeColor(red);
-		saveCurrentTransform();
-		translate(350, 380);
-		rotate(45);
-		drawSolidRectangle(diam1X, diam1Y, diam1Width, diam1Height);
-		restoreLastTransform();
+		// Diamonds, 2x
+		drawImage(diamImage, diam1X, diam1Y, diam1Width, diam1Height);
+		drawImage(diamImage, diam1X+200, diam1Y-310, diam1Width, diam1Height);
 		
+		// Triangles, 2x
 		changeColor(purple);
-		drawSolidRectangle(rect2X, rect2Y, rect2Width, rect2Height);
-		drawSolidRectangle(rect2X+560, rect2Y-320, rect2Width, rect2Height);
+		drawImage(triImage, rect2X, rect2Y, rect2Width, rect2Height);
+		drawImage(triImage, rect2X+560, rect2Y-320, rect2Width, rect2Height);
 		
-		changeColor(red);
-		saveCurrentTransform();
-		translate(480, 60);
-		rotate(45);
-		drawSolidRectangle(-15, -15, diam1Width, diam1Height);
-		restoreLastTransform();
+		// Hearts, 3x
+		drawImage(heartImage, 750, 10, 40, 40);
+		drawImage(heartImage, 700, 10, 40, 40);
+		drawImage(heartImage, 650, 10, 40, 40);
 		
-		changeColor(white);
-		drawText(750, 40, "" + score);
-		drawText(250, 350, "Match the shapes!");
+		//Score and Player Instructions
+		changeColor(black);
+		drawText(10, 40, "" + score);
+		drawText(250, height()/2, "Match the shapes!");
 	}
 	
 	/*
@@ -171,8 +190,10 @@ public class MatchIT extends GameEngine{
 	// Initialise all global values here
 	@Override
 	public void init() {
+		// Strings
 		currentLevel = "menu"; //Player starts in the menu
 		
+		// Doubles
 		circle1X = 730; 
 		circle1Y = 430; 
 		circle1R = 50;
@@ -192,22 +213,17 @@ public class MatchIT extends GameEngine{
 		rect2Width = 150; 
 		rect2Height = 100;
 		
+		// Integers
 		score = 0;
 		
-		play               = loadImage("Menu/play.png");
-		playHighlighted    = loadImage("Menu/playHighlighted.png");
-		mute            = loadImage("Menu/mute.png");
-		muteHighlighted = loadImage("Menu/muteHighlighted.png");
-		exit               = loadImage("Menu/exit.png");
-		exitHighlighted    = loadImage("Menu/exitHighlighted.png");
-		
-		
-		backgroundMusic = loadAudio("Audio/background.wav");
-		menuMusic = loadAudio("Audio/menu.wav");
+		// Audio
+		initAudio();
 		if(currentLevel == "menu"){
 			startAudioLoop(menuMusic);
 		}
 		
+		//Load images for menu
+		initMenu();
 		//Load images for lvl1
 		initLevel1(); 
 	}

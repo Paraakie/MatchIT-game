@@ -58,12 +58,20 @@ public class MatchIT extends GameEngine{
 	mute,
 	muteHighlighted,
 	exit,
-	exitHighlighted;
+	exitHighlighted,
+	menuBackground,
+	gameOverBackground,
+	title;
 	
 	int menuOption = 0;
 	
+	
 	public void initMenu() {
 		// Menu Images
+		title = loadImage("images_farm/title.png");
+		menuBackground = loadImage("images_farm/background1.png");
+		gameOverBackground = loadImage("images_farm/background3.png");
+		
 		play               = loadImage("Menu/play.png");
 		playHighlighted    = loadImage("Menu/playHighlighted.png");
 		mute            = loadImage("Menu/mute.png");
@@ -77,28 +85,30 @@ public class MatchIT extends GameEngine{
 	}
 	
 	public void drawMenu() {
-		drawImage(background,0,0, width(), height());
+		drawImage(menuBackground,0,0, width(), height());
+		drawImage(title, -10, -50, 800, 600);
 		
 		//play
 		if(menuOption == 0){
-			drawImage(playHighlighted, 50, 150);
+			drawImage(playHighlighted, 50, 350, 100, 100);
 		}else{
-			drawImage(play, 50, 150);
+			drawImage(play, 50, 350, 100, 100);
 		}
 		
 		//Mute
 		if(menuOption == 1) {
-			drawImage(muteHighlighted, 350, 150);
+			drawImage(muteHighlighted, 350, 350, 100, 100);
 		} else {
-			drawImage(mute, 350, 150);
+			drawImage(mute, 350, 350, 100, 100);
 		}
 		
 		//Exit
 		if(menuOption == 2) {
-			drawImage(exitHighlighted, 600, 150);
+			drawImage(exitHighlighted, 600, 350, 100, 100);
 		} else {
-			drawImage(exit, 600, 150);
+			drawImage(exit, 600, 350, 100, 100);
 		}
+		
 		
 	}
 	
@@ -124,7 +134,7 @@ public class MatchIT extends GameEngine{
 	//load all images here
 	public void initLevel1() {
 		//background
-		background = loadImage("images_farm\\background.png"); 
+		background = loadImage("images_farm\\background2.png"); 
 		//circle
 		circleImage = loadImage("images_farm\\coin.png"); 
 		//square
@@ -182,11 +192,11 @@ public class MatchIT extends GameEngine{
 	}
 	
 	public void drawGameOverScreen() {
-		drawImage(background,0,0, width(), height());
+		drawImage(gameOverBackground,0,0, width(), height());
 		
 		// Draw Coins
 		drawCoin();
-				
+	
 		changeColor(black);
 		drawText(width()/2-165, height()/2, "Final Score: " +score, "Arial", 50);
 		if(score <= 0) {

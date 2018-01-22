@@ -9,6 +9,7 @@ import java.io.*;
 import javax.imageio.*;
 import java.awt.*;
 import java.awt.geom.*;
+import javax.swing.*;
 
 /*
  * Images and Audio used in this project 
@@ -71,7 +72,6 @@ public class MatchIT extends GameEngine{
 		title = loadImage("images_farm/title.png");
 		menuBackground = loadImage("images_farm/background1.png");
 		gameOverBackground = loadImage("images_farm/background3.png");
-		
 		play               = loadImage("Menu/play.png");
 		playHighlighted    = loadImage("Menu/playHighlighted.png");
 		mute            = loadImage("Menu/mute.png");
@@ -282,7 +282,7 @@ public class MatchIT extends GameEngine{
 	@Override
 	public void init() {
 		// Strings
-		currentLevel = "gameOver"; //Player starts in the menu
+		currentLevel = "menu"; //Player starts in the menu
 		
 		// Doubles
 		circle1X = 660; 
@@ -379,7 +379,9 @@ public class MatchIT extends GameEngine{
 	
 	// Called whenever a mouse button is clicked
 	// (pressed and released in the same position)
-	public void mouseClicked(MouseEvent event) {}
+	public void mouseClicked(MouseEvent event) {
+		
+	}
 
 	
 	// Called whenever a mouse button is pressed
@@ -409,13 +411,13 @@ public class MatchIT extends GameEngine{
     //Called whenever a key is pressed in the menu
     public void keyPressedMenu(KeyEvent e) {
 		//Up Arrow
-		if(e.getKeyCode() == KeyEvent.VK_UP) {
+		if(e.getKeyCode() == KeyEvent.VK_LEFT) {
 			if(menuOption > 0) {
 				menuOption--;
 			}
 		}
 		//Down Arrow
-		if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+		if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			if(menuOption < 2) {
 				menuOption++;
 			}
@@ -425,11 +427,9 @@ public class MatchIT extends GameEngine{
 			if(menuOption == 0) {
 				//Start Game
 				currentLevel = "lvl1";
-				stopAudioLoop(menuMusic);
-				startAudioLoop(backgroundMusic);
 				
 			} else if(menuOption == 1) {
-				//Not sure how to mute sound here...
+				stopAudioLoop(menuMusic);
 
 			} else {
 				//Exit
@@ -438,17 +438,12 @@ public class MatchIT extends GameEngine{
 		}
 	}
 	
-
-
-
 	//Called whenever a key is pressed in the game
     public void keyPressedGame(KeyEvent e) {
 		//In the game
         if(e.getKeyCode() == KeyEvent.VK_Q ||
                 e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			currentLevel = "menu";
-			stopAudioLoop(backgroundMusic);
-			startAudioLoop(menuMusic);
 		}
     }
 }

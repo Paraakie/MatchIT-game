@@ -13,7 +13,7 @@ import javax.swing.*;
 
 /*
  * Images and Audio used in this project 
- * are not ours, the license is in same the
+ * are not ours, the license are in same 
  * folder as the contents are.
  */
 
@@ -23,9 +23,9 @@ public class MatchIT extends GameEngine{
 	}
 	
 	/* Global string to switch between levels/menu/winScreen
-	 * menu =  Main-menu
-	 * lvl1 = First level
-	 * gameOver = Game Over screen
+	 * menu =  Main-menu;
+	 * lvl1 = First level;
+	 * gameOver = Game Over screen;
 	 */
 	String currentLevel;
 	
@@ -66,7 +66,6 @@ public class MatchIT extends GameEngine{
 	
 	int menuOption = 0;
 	
-	
 	public void initMenu() {
 		// Menu Images
 		title = loadImage("images_farm/title.png");
@@ -80,9 +79,7 @@ public class MatchIT extends GameEngine{
 		exitHighlighted    = loadImage("Menu/exitHighlighted.png");
 	}
 	
-	public void updateMenu() {
-		
-	}
+	public void updateMenu() {}
 	
 	public void drawMenu() {
 		drawImage(menuBackground,0,0, width(), height());
@@ -108,74 +105,91 @@ public class MatchIT extends GameEngine{
 		} else {
 			drawImage(exit, 600, 350, 100, 100);
 		}
-		
-		
 	}
 	
 	/*
 	 * Level 1
 	 */
 	
-	double circle1X, circle1Y, circle1Width, circle1Height;
-	double rect1X, rect1Y, rect1Width, rect1Height;
-	double diam1X, diam1Y, diam1Width, diam1Height;
-	double rect2X, rect2Y, rect2Width, rect2Height;
+	double circle1X, circle1Y, circle2X, circle2Y, circle1Width, circle1Height;
+	double square1X, square1Y, square2X, square2Y, square1Width, square1Height;
+	double diam1X, diam1Y, diam2X, diam2Y, diam1Width, diam1Height;
+	double rect1X, rect1Y, rect2X, rect2Y, rectWidth, rectHeight;
+	double heart1X, heart2X, heart3X, heartY, heartWidth, heartHeight;
+
+	int score; // The value which will hold the score, also be used for gameOverScreen
+	int life; // Start with 3 lives; You lose 1 life if you match wrong;
 	
-	int score; //The value which will hold the score, also be used for gameOverScreen
+	// Booleans, keep track of whether the Objects have been matched, once matched they will disappear
+	boolean circlesMatched, squaresMatched, diamondsMatched, rectanglesMatched;
 	
 	//All Images for Lvl1
-	Image heartImage, 
-	      squareImage, 
-	      circleImage,
-	      diamImage,
-	      triImage, 
-	      background; 
+	Image heartImage, squareImage, circleImage, diamImage, rectImage, background;
 	
 	//load all images here
 	public void initLevel1() {
-		//background
+		// background
 		background = loadImage("images_farm\\background2.png"); 
 		//circle
 		circleImage = loadImage("images_farm\\coin.png"); 
-		//square
+		// square
 		squareImage = loadImage("images_farm\\box1.png"); 
 		//diamond
 		diamImage = loadImage("images_farm\\crystal.png");
-		//triangle
-		triImage = loadImage("images_farm\\triangle.png");
-		//heart
+		// rectangle
+		rectImage = loadImage("images_farm\\box2.png");
+		// heart
 		heartImage = loadImage("images_farm\\heart.png"); 
 	}
 	
 	public void updateLevel1() {
-		
+		// Move on to gameOver Screen 
+		if(life <= 0) { // Once all Lives are gone
+			currentLevel = "gameOver";
+		}
+		if(circlesMatched && squaresMatched && diamondsMatched && rectanglesMatched) { // Once all Objects are Matched
+			currentLevel = "gameOver";
+		}
 	}
 	
 	public void drawLevel1() {
 		// Background
 		drawImage(background, 0, 0, width(), height());
 		
-		// Circles, 2x
-		drawImage(circleImage, circle1X, circle1Y, circle1Width, circle1Height);
-		drawImage(circleImage, circle1X-590, circle1Y-310, circle1Width, circle1Height);
+		// Circles, 2x, disappear when matched
+		if(circlesMatched == false) {
+			drawImage(circleImage, circle1X, circle1Y, circle1Width, circle1Height);
+			drawImage(circleImage, circle2X, circle2Y, circle1Width, circle1Height);
+		}
 		
-		// Squares
-		drawImage(squareImage, rect1X, rect1Y, rect1Width, rect1Height);
-		drawImage(squareImage, rect1X-200, rect1Y-320, rect1Width, rect1Height);
+		// Squares 2x, disappear when matched
+		if(squaresMatched == false) {
+			drawImage(squareImage, square1X, square1Y, square1Width, square1Height);
+			drawImage(squareImage, square2X, square2Y, square1Width, square1Height);
+		}
 		
-		// Diamonds, 2x
-		drawImage(diamImage, diam1X, diam1Y, diam1Width, diam1Height);
-		drawImage(diamImage, diam1X+200, diam1Y-310, diam1Width, diam1Height);
+		// Diamonds, 2x, disappear when matched
+		if(diamondsMatched == false) {
+			drawImage(diamImage, diam1X, diam1Y, diam1Width, diam1Height);
+			drawImage(diamImage, diam2X, diam2Y, diam1Width, diam1Height);
+		}
 		
-		// Triangles, 2x
-		changeColor(purple);
-		drawImage(triImage, rect2X, rect2Y, rect2Width, rect2Height);
-		drawImage(triImage, rect2X+560, rect2Y-320, rect2Width, rect2Height);
+		// Rectangles, 2x, disappear when matched
+		if(rectanglesMatched == false) {
+			drawImage(rectImage, rect1X, rect1Y, rectWidth, rectHeight);
+			drawImage(rectImage, rect2X, rect2Y, rectWidth, rectHeight);
+		}
 		
-		// Hearts, 3x
-		drawImage(heartImage, 750, 10, 40, 40);
-		drawImage(heartImage, 700, 10, 40, 40);
-		drawImage(heartImage, 650, 10, 40, 40);
+		// Hearts, 3x, disappear after badMatch
+		if(life >= 1) {
+			drawImage(heartImage, heart1X, heartY, heartWidth, heartHeight);
+			if(life >= 2) {
+				drawImage(heartImage, heart2X, heartY, heartWidth, heartHeight);
+				if(life == 3) {
+					drawImage(heartImage, heart3X, heartY, heartWidth, heartHeight);
+				}
+			}
+		}
 		
 		//Score and Player Instructions
 		changeColor(black);
@@ -184,12 +198,10 @@ public class MatchIT extends GameEngine{
 	}
 	
 	/*
-	 *Game Over Screen
+	 * Game Over Screen
 	 */
 	
-	public void updateGameOverScreen() {
-		
-	}
+	public void updateGameOverScreen() {}
 	
 	public void drawGameOverScreen() {
 		drawImage(gameOverBackground,0,0, width(), height());
@@ -200,7 +212,7 @@ public class MatchIT extends GameEngine{
 		changeColor(black);
 		drawText(width()/2-165, height()/2, "Final Score: " +score, "Arial", 50);
 		if(score <= 0) {
-			drawText(width()/2-185, height()/2+80, "Better Luck next time", "Arial", 40);
+			drawText(width()/2-185, height()/2+80, "Better Luck next time!", "Arial", 40);
 		} else if(score >= 30) {
 			drawText(width()/2-95, height()/2+80, "You Win!", "Arial", 40);
 		} else {
@@ -221,8 +233,9 @@ public class MatchIT extends GameEngine{
 	double coin3_X;
 	double coin_Y; //All coins are on the same height
 	
-	// Coin Size; only value because coin's has same value for width&height
-	double coinSize;
+	// Coin Size
++	double coinWidth;
++	double coinHeight;
 	
 	// Timer and Duration
 	double coinTimer;
@@ -273,60 +286,95 @@ public class MatchIT extends GameEngine{
 	}
 	
 	public void drawCoin() {
-		drawImage(coinImages[coinFrame], coin1_X, coin_Y, coinSize, coinSize);
-		drawImage(coinImages[coinFrame], coin2_X, coin_Y, coinSize, coinSize);
-		drawImage(coinImages[coinFrame], coin3_X, coin_Y, coinSize, coinSize);
+		// Draw Coins based of remaining lifes
++		if(life >= 1) {
++			drawImage(coinImages[coinFrame], coin1_X, coin_Y, coinWidth, coinHeight);
++			if(life >= 2) {
++				drawImage(coinImages[coinFrame], coin2_X, coin_Y, coinWidth, coinHeight);
++				if(life == 3) {
++					drawImage(coinImages[coinFrame], coin3_X, coin_Y, coinWidth, coinHeight);
++				}
++			}
++		}
 	}
 	
-	// Initialise all global values here
+	// Initialize all global values here
 	@Override
 	public void init() {
 		// Strings
-		currentLevel = "menu"; //Player starts in the menu
-		
+		currentLevel = "lvl1"; // Player starts in the menu
+		selectedObject = "none"; // no object selected initially
+		movedObject = "none"; // no objects moved initially
+
 		// Doubles
-		circle1X = 660; 
-		circle1Y = 370; 
+		circle1X = 660;
+		circle1Y = 370;
+		circle2X = 70;
+		circle2Y = 60;
 		circle1Width = 110;
 		circle1Height = 110;
-		
-		rect1X = 480; 
-		rect1Y = 380; 
-		rect1Width = 100; 
-		rect1Height = 100;
-		
-		diam1X = 280; 
-		diam1Y = 380; 
-		diam1Width = 90; 
-		diam1Height = 90;
-		
-		rect2X = 50; 
-		rect2Y = 380; 
-		rect2Width = 150; 
-		rect2Height = 100;
 
-		coin1_X = 310; 
+		square1X = 480;
+		square1Y = 380;
+		square2X = 280;
+		square2Y = 60;
+		square1Width = 100;
+		square1Height = 100;
+
+		diam1X = 280;
+		diam1Y = 380;
+		diam2X = 480;
+		diam2Y = 70;
+		diam1Width = 90;
+		diam1Height = 90;
+
+		rect1X = 50;
+		rect1Y = 380;
+		rect2X = 610;
+		rect2Y = 60;
+		rectWidth = 150;
+		rectHeight = 100;
+
+		heart1X = 750;
+		heart2X = 700;
+		heart3X = 650;
+		heartY = 10;
+		heartWidth = 40;
+		heartHeight = 40;
+
+		coin1_X = 310;
 		coin2_X = 370;
-		coin3_X = 430; 
+		coin3_X = 430;
 		coin_Y = 150;
-		coinSize = 60;
-		
+		coinWidth = 60;
+		coinHeight = 60;
+
+		mouseX = 0;
+		mouseY = 0;
+
 		// Integers
 		score = 0;
+		life = 3;
 		coinFrame = 0;
 		
+		// Booleans
+		circlesMatched = false;
+		squaresMatched = false;
+		diamondsMatched = false; 
+		rectanglesMatched = false;
+
 		// Audio
 		initAudio();
-		if(currentLevel == "menu"){
+		if (currentLevel == "menu") { // Not in Update as it doesn't work there
 			startAudioLoop(menuMusic);
 		}
-		
-		//Load images for menu
+
+		// Load images for menu
 		initMenu();
-		//Load images for lvl1
-		initLevel1(); 
-		//Load Coin Animation
-		initCoin();  
+		// Load images for lvl1
+		initLevel1();
+		// Load Coin Animation
+		initCoin();
 	}
 	
 	// Main Update Function
@@ -374,32 +422,37 @@ public class MatchIT extends GameEngine{
 	}
 	
 	/*
-	 * All mouse Events needed
+	 * Mouse Events
 	 */
+	
+	double mouseX, mouseY; // Mouse coordinates
 	
 	// Called whenever a mouse button is clicked
 	// (pressed and released in the same position)
 	public void mouseClicked(MouseEvent event) {
-		
-	}
+		// Player controls; for playing the level(s)
+		if (currentLevel == "lvl1") {
+			// Get Mouse Coordinates
+			mouseX = event.getX();
+			mouseY = event.getY();
 
-	
-	// Called whenever a mouse button is pressed
-	public void mousePressed(MouseEvent event) {
-		
+			// First Check if what was clicked, if it wasn't an object
+			boolean temp = wasObjectClicked(); // use temp variable to avoid using function as argument
+			if (temp) {
+				if (movedObject == "none") {
+					movedObject = selectedObject;
+					System.out.println(movedObject+" is the moved Object\n"); // For testing purposes
+					
+				} else {
+					matchObjects(movedObject, selectedObject);
+					movedObject = "none";
+				}
+				selectedObject = "none";
+			}
+		}
 	}
-
-	// Called whenever a mouse button is released
-	public void mouseReleased(MouseEvent event) {
-		
-	}
 	
-	// Called whenever the mouse is moved with the mouse button held down
-	public void mouseDragged(MouseEvent event) {
-		
-	}
-	
-	//Called whenever a key is pressed
+   //Called whenever a key is pressed
     public void keyPressed(KeyEvent e) {
     	if(currentLevel == "menu") {
     		keyPressedMenu(e);
@@ -446,4 +499,246 @@ public class MatchIT extends GameEngine{
 			currentLevel = "menu";
 		}
     }
+/*
+	 * Interacting with objects
+	 */
+
+	/*
+	 * These two strings represents the Objects selected/moved none = no object
+	 * selected Possible Objects are: circle1 , circle2; square1, square 2; diam1,
+	 * diam2; rect1, rect2;
+	 */
+	String selectedObject; // What object is currently selected
+	String movedObject; // What object is currently moved
+
+	/*
+	 * Game Mechanics explained in detail: One left-mouse-click makes an Object
+	 * movable once an object is movable you can match it with another
+	 * 
+	 * The aim is to match the same looking objects; 
+	 * good match -> gain score, match objects disappear; 
+	 * bad match -> lose score, lose a life, lose movable object;
+	 * returns back to origin
+	 */
+	public void matchObjects(String mObject, String sObject) {
+		// First two if statements that check for any errors
+		if (mObject == "none" || sObject == "none") {
+			System.out.println("Error, Objects can't be matched with none");
+			return;
+		}
+
+		if (mObject == sObject) {
+			System.out.println("Error, Objects can't be matched with themselves");
+			return;
+		}
+
+		// Matching
+		// Circles
+		if (mObject == "circle1" && sObject == "circle2") {
+			goodMatch();
+			circlesMatched = true;
+			return;
+		} else if (mObject == "circle2" && sObject == "circle1") {
+			goodMatch();
+			circlesMatched = true;
+			return;
+		}
+		// Squares
+		if (mObject == "square1" && sObject == "square2") {
+			goodMatch();
+			squaresMatched = true;
+			return;
+		} else if (mObject == "square2" && sObject == "square1") {
+			goodMatch();
+			squaresMatched = true;
+			return;
+		}
+		// Diamonds
+		if (mObject == "diam1" && sObject == "diam2") {
+			goodMatch();
+			diamondsMatched = true;
+			return;
+		} else if (mObject == "diam2" && sObject == "diam1") {
+			goodMatch();
+			diamondsMatched = true;
+			return;
+		}
+		// Rectangles
+		if (mObject == "rect1" && sObject == "rect2") {
+			goodMatch();
+			rectanglesMatched = true;
+			return;
+		} else if (mObject == "rect2" && sObject == "rect1") {
+			goodMatch();
+			rectanglesMatched = true;
+			return;
+		}
+		badMatch();
+	}
+
+	public void goodMatch() {
+		score = score + 20;
+		//Audio implementation
+	}
+
+	public void badMatch() {
+		score = score - 10;
+		life--;
+		movedObject = "none";
+		//Audio implementation
+	}
+
+	/*
+	 * Functor that determines what's exactly been clicked on returns false if no
+	 * object was clicked on else returns true
+	 */
+	public boolean wasObjectClicked() {
+		// circles
+		if(circlesMatched == false) {
+			if (wasCircle1_Clicked()) {
+				return true;
+			}
+			if (wasCircle2_Clicked()) {
+				return true;
+			}
+		}
+		// Squares
+		if(squaresMatched == false) {
+			if (wasSquare1_Clicked()) {
+				return true;
+			}
+			if (wasSquare2_Clicked()) {
+				return true;
+			}
+		}
+		// Diamonds
+		if(diamondsMatched == false) {
+			if (wasDiam1_Clicked()) {
+				return true;
+			}
+			if (wasDiam2_Clicked()) {
+				return true;
+			}
+		}
+		// Rectangles
+		if(rectanglesMatched == false) {
+			if (wasRect1_Clicked()) {
+				return true;
+			}
+			if (wasRect2_Clicked()) {
+				return true;
+			}
+		}
+
+		return false; // No Object was clicked
+
+	}
+
+	// Check if Circle1 was clicked
+	public boolean wasCircle1_Clicked() {
+		if (movedObject != "circle1") {
+			if (distance(circle1X + circle1Width / 2, circle1Y + circle1Height / 2, mouseX, mouseY) <= circle1Height) {
+				selectedObject = "circle1";
+				System.out.println("Circle1 is the selected Object\n"); // For testing purposes
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// Check if Circle2 was clicked
+	public boolean wasCircle2_Clicked() {
+		if (movedObject != "circle2") {
+			if (distance(circle2X + circle1Width / 2, circle2Y + circle1Height / 2, mouseX, mouseY) <= circle1Height) {
+				selectedObject = "circle2";
+				System.out.println("Circle2 is the selected Object\n"); // For testing purposes
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// Check if Square1 was clicked
+	public boolean wasSquare1_Clicked() {
+		if (movedObject != "square1") {
+			if ((mouseX >= square1X) && (mouseX <= (square1X + square1Width))) {
+				if ((mouseY >= square1Y) && (mouseY <= (square1Y + square1Height))) {
+					selectedObject = "square1";
+					System.out.println("Square1 is the selected Object\n"); // For testing purposes
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	// Check if Square2 was clicked
+	public boolean wasSquare2_Clicked() {
+		if (movedObject != "square2") {
+			if ((mouseX >= square2X) && (mouseX <= (square2X + square1Width))) {
+				if ((mouseY >= square2Y) && (mouseY <= (square2Y + square1Height))) {
+					selectedObject = "square2";
+					System.out.println("Square2 is the selected Object\n"); // For testing purposes
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	// Check if Diam1 was clicked
+	public boolean wasDiam1_Clicked() {
+		if (movedObject != "diam1") {
+			if ((mouseX >= diam1X) && (mouseX <= (diam1X + diam1Width))) {
+				if ((mouseY >= diam1Y) && (mouseY <= (diam1Y + diam1Height))) {
+					selectedObject = "diam1";
+					System.out.println("Diam1 is the selected Object\n"); // For testing purposes
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	// Check if Diam2 was clicked
+	public boolean wasDiam2_Clicked() {
+		if (movedObject != "square1") {
+			if ((mouseX >= diam2X) && (mouseX <= (diam2X + diam1Width))) {
+				if ((mouseY >= diam2Y) && (mouseY <= (diam2Y + diam1Height))) {
+					selectedObject = "diam2";
+					System.out.println("Diam2 is the selected Object\n"); // For testing purposes
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	// Check if Rect1 was clicked
+	public boolean wasRect1_Clicked() {
+		if (movedObject != "rect1") {
+			if ((mouseX >= rect1X) && (mouseX <= (rect1X + rectWidth))) {
+				if ((mouseY >= rect1Y) && (mouseY <= (rect1Y + rectHeight))) {
+					selectedObject = "rect1";
+					System.out.println("Rect1 is the selected Object\n"); // For testing purposes
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	// Check if Rect2 was clicked
+	public boolean wasRect2_Clicked() {
+		if (movedObject != "rect2") {
+			if ((mouseX >= rect2X) && (mouseX <= (rect2X + rectWidth))) {
+				if ((mouseY >= rect2Y) && (mouseY <= (rect2Y + rectHeight))) {
+					selectedObject = "rect2";
+					System.out.println("Rect2 is the selected Object\n"); // For testing purposes
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

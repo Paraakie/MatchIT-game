@@ -633,15 +633,15 @@ public class MatchIT extends GameEngine{
 	}
 
 	public void goodMatch() {
-		score = score + 20;
-		//Audio implementation
+		score = score + 20;		
+		playAudio(goodMatch); // Audio implementation
 	}
 
 	public void badMatch() {
 		score = score - 10;
 		life--;
 		movedObject = "none";
-		//Audio implementation
+		playAudio(badMatch); // Audio implementation
 	}
 
 	/*
@@ -693,7 +693,7 @@ public class MatchIT extends GameEngine{
 	// Check if Circle1 was clicked
 	public boolean wasCircle1_Clicked() {
 		if (movedObject != "circle1") {
-			if (distance(circle1X + circle1Width / 2, circle1Y + circle1Height / 2, mouseX, mouseY) <= circle1Height) {
+			if (distance(circle1X + circle1Width / 2, circle1Y + circle1Height / 2, mouseX, mouseY) <= circle1Height/2) {
 				selectedObject = "circle1";
 				System.out.println("Circle1 is the selected Object\n"); // For testing purposes
 				return true;
@@ -705,7 +705,7 @@ public class MatchIT extends GameEngine{
 	// Check if Circle2 was clicked
 	public boolean wasCircle2_Clicked() {
 		if (movedObject != "circle2") {
-			if (distance(circle2X + circle1Width / 2, circle2Y + circle1Height / 2, mouseX, mouseY) <= circle1Height) {
+			if (distance(circle2X + circle1Width / 2, circle2Y + circle1Height / 2, mouseX, mouseY) <= circle1Height/2) {
 				selectedObject = "circle2";
 				System.out.println("Circle2 is the selected Object\n"); // For testing purposes
 				return true;

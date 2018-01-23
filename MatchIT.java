@@ -13,7 +13,7 @@ import javax.swing.*;
 
 /*
  * Images and Audio used in this project 
- * are not ours, the license are in same 
+ * are not ours, the licenses are in same 
  * folder as the contents are.
  */
 
@@ -111,6 +111,7 @@ public class MatchIT extends GameEngine{
 	 * Level 1
 	 */
 	
+	// Values for Objects
 	double circle1X, circle1Y, circle2X, circle2Y, circle1Width, circle1Height;
 	double square1X, square1Y, square2X, square2Y, square1Width, square1Height;
 	double diam1X, diam1Y, diam2X, diam2Y, diam1Width, diam1Height;

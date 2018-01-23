@@ -38,6 +38,9 @@ public class MatchIT extends GameEngine{
 	AudioClip goodMatch;
 	AudioClip badMatch;
 	
+	boolean muted;
+	boolean playPressed;
+	
 	public void initAudio() {
 		// Music
 		backgroundMusic = loadAudio("Audio/background.wav");
@@ -56,10 +59,13 @@ public class MatchIT extends GameEngine{
 	//All images for menu
 	Image play,
 	playHighlighted,
+	playClicked,
 	mute,
 	muteHighlighted,
+	muteClicked,
 	exit,
 	exitHighlighted,
+	exitClicked,
 	menuBackground,
 	gameOverBackground,
 	title;
@@ -73,10 +79,13 @@ public class MatchIT extends GameEngine{
 		gameOverBackground = loadImage("images_farm/background3.png");
 		play               = loadImage("Menu/play.png");
 		playHighlighted    = loadImage("Menu/playHighlighted.png");
+		playClicked = loadImage("Menu/playClicked.png");
 		mute            = loadImage("Menu/mute.png");
 		muteHighlighted = loadImage("Menu/muteHighlighted.png");
+		muteClicked = loadImage("Menu/muteClicked.png");
 		exit               = loadImage("Menu/exit.png");
 		exitHighlighted    = loadImage("Menu/exitHighlighted.png");
+		exitClicked = loadImage("Menu/exitClicked.png");
 	}
 	
 	public void updateMenu() {}
@@ -104,6 +113,10 @@ public class MatchIT extends GameEngine{
 			drawImage(exitHighlighted, 600, 350, 100, 100);
 		} else {
 			drawImage(exit, 600, 350, 100, 100);
+		}
+		
+		if(playPressed == true){
+			drawImage(playClicked, 50, 350, 100, 100);
 		}
 	}
 	
@@ -235,8 +248,8 @@ public class MatchIT extends GameEngine{
 	double coin_Y; //All coins are on the same height
 	
 	// Coin Size
-+	double coinWidth;
-+	double coinHeight;
+	double coinWidth;
+	double coinHeight;
 	
 	// Timer and Duration
 	double coinTimer;
@@ -288,22 +301,22 @@ public class MatchIT extends GameEngine{
 	
 	public void drawCoin() {
 		// Draw Coins based of remaining lifes
-+		if(life >= 1) {
-+			drawImage(coinImages[coinFrame], coin1_X, coin_Y, coinWidth, coinHeight);
-+			if(life >= 2) {
-+				drawImage(coinImages[coinFrame], coin2_X, coin_Y, coinWidth, coinHeight);
-+				if(life == 3) {
-+					drawImage(coinImages[coinFrame], coin3_X, coin_Y, coinWidth, coinHeight);
-+				}
-+			}
-+		}
+		if(life >= 1) {
+			drawImage(coinImages[coinFrame], coin1_X, coin_Y, coinWidth, coinHeight);
+			if(life >= 2) {
+				drawImage(coinImages[coinFrame], coin2_X, coin_Y, coinWidth, coinHeight);
+				if(life == 3) {
+					drawImage(coinImages[coinFrame], coin3_X, coin_Y, coinWidth, coinHeight);
+				}
+			}
+		}
 	}
 	
 	// Initialize all global values here
 	@Override
 	public void init() {
 		// Strings
-		currentLevel = "lvl1"; // Player starts in the menu
+		currentLevel = "menu"; // Player starts in the menu
 		selectedObject = "none"; // no object selected initially
 		movedObject = "none"; // no objects moved initially
 
@@ -363,6 +376,11 @@ public class MatchIT extends GameEngine{
 		squaresMatched = false;
 		diamondsMatched = false; 
 		rectanglesMatched = false;
+		muted = false;
+		playPressed = false;
+		
+		//Audio
+		
 
 		// Audio
 		initAudio();
@@ -431,6 +449,42 @@ public class MatchIT extends GameEngine{
 	// Called whenever a mouse button is clicked
 	// (pressed and released in the same position)
 	public void mouseClicked(MouseEvent event) {
+		
+	}
+	
+	// Called whenever a mouse button is pressed
+	public void mousePressed(MouseEvent event) {
+		if(currentLevel == "menu"){
+			mouseX = event.getX();
+			mouseY = event.getY();
+			if((mouseX >= 50) && (mouseX <= 150)){
+				if((mouseY >= 350) && (mouseY <= 450)){
+					playPressed = true;
+					drawMenu();
+					return;
+				}
+			}
+		}
+	}
+	
+	// Called whenever a mouse button is released
+	public void mouseReleased(MouseEvent event) {
+		if(currentLevel == "menu"){
+			mouseX = event.getX();
+			mouseY = event.getY();
+			if((mouseX >= 50) && (mouseX <= 150)){
+				if((mouseY >= 350) && (mouseY <= 450)){
+					currentLevel = "lvl1";
+					playPressed = true;
+					return;
+				}
+			}
+		}
+		
+		if(currentLevel == "menu"){
+			return;
+		}
+			
 		// Player controls; for playing the level(s)
 		if (currentLevel == "lvl1") {
 			// Get Mouse Coordinates
@@ -484,6 +538,7 @@ public class MatchIT extends GameEngine{
 				
 			} else if(menuOption == 1) {
 				stopAudioLoop(menuMusic);
+				muted = true;
 
 			} else {
 				//Exit

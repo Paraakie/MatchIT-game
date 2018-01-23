@@ -39,7 +39,13 @@ public class MatchIT extends GameEngine{
 	AudioClip badMatch;
 	
 	boolean muted;
-	boolean playPressed;
+	boolean playPressed, mutePressed, exitPressed;
+	
+	double playX, playY;
+	double muteX, muteY;
+	double exitX, exitY;
+	double buttonWidth;
+	double buttonHeight;
 	
 	public void initAudio() {
 		// Music
@@ -96,27 +102,33 @@ public class MatchIT extends GameEngine{
 		
 		//play
 		if(menuOption == 0){
-			drawImage(playHighlighted, 50, 350, 100, 100);
+			drawImage(playHighlighted, playX, playY, buttonWidth, buttonHeight);
 		}else{
-			drawImage(play, 50, 350, 100, 100);
+			drawImage(play, playX, playY, buttonWidth, buttonHeight);
 		}
 		
 		//Mute
 		if(menuOption == 1) {
-			drawImage(muteHighlighted, 350, 350, 100, 100);
+			drawImage(muteHighlighted, muteX, muteY, buttonWidth, buttonHeight);
 		} else {
-			drawImage(mute, 350, 350, 100, 100);
+			drawImage(mute, muteX, muteY, buttonWidth, buttonHeight);
 		}
 		
 		//Exit
 		if(menuOption == 2) {
-			drawImage(exitHighlighted, 600, 350, 100, 100);
+			drawImage(exitHighlighted, exitX, exitY, buttonWidth, buttonHeight);
 		} else {
-			drawImage(exit, 600, 350, 100, 100);
+			drawImage(exit, exitX, exitY, buttonWidth, buttonHeight);
 		}
 		
 		if(playPressed == true){
-			drawImage(playClicked, 50, 350, 100, 100);
+			drawImage(playClicked, playX, playY, buttonWidth, buttonHeight);
+		}
+		if(mutePressed == true){
+			drawImage(muteClicked, muteX, muteY, buttonWidth, buttonHeight);
+		}
+		if(exitPressed == true){
+			drawImage(exitClicked, exitX, exitY, buttonWidth, buttonHeight);
 		}
 	}
 	
@@ -365,6 +377,16 @@ public class MatchIT extends GameEngine{
 
 		mouseX = 0;
 		mouseY = 0;
+		
+		playX = 50;
+		playY = 350;
+		muteX = 350;
+		muteY = 350;
+		exitX = 600;
+		exitY = 350;
+		buttonWidth = 100;
+		buttonHeight = 100;
+		
 
 		// Integers
 		score = 0;
@@ -378,6 +400,8 @@ public class MatchIT extends GameEngine{
 		rectanglesMatched = false;
 		muted = false;
 		playPressed = false;
+		mutePressed = false;
+		exitPressed = false;
 		
 		//Audio
 		
@@ -457,9 +481,32 @@ public class MatchIT extends GameEngine{
 		if(currentLevel == "menu"){
 			mouseX = event.getX();
 			mouseY = event.getY();
-			if((mouseX >= 50) && (mouseX <= 150)){
-				if((mouseY >= 350) && (mouseY <= 450)){
+			if((mouseX >= playX) && (mouseX <= playX + buttonWidth)){
+				if((mouseY >= playY) && (mouseY <= playY + buttonHeight)){
 					playPressed = true;
+					drawMenu();
+					return;
+				}
+			}
+		}
+		
+		if(currentLevel == "menu"){
+			mouseX = event.getX();
+			mouseY = event.getY();
+			if((mouseX >= muteX) && (mouseX <= muteX + buttonWidth)){
+				if((mouseY >= muteY) && (mouseY <= muteY + buttonHeight)){
+					mutePressed = true;
+					drawMenu();
+					return;
+				}
+			}
+		}
+		if(currentLevel == "menu"){
+			mouseX = event.getX();
+			mouseY = event.getY();
+			if((mouseX >= exitX) && (mouseX <= exitX + buttonWidth)){
+				if((mouseY >= exitY) && (mouseY <= exitY + buttonHeight)){
+					exitPressed = true;
 					drawMenu();
 					return;
 				}
@@ -469,17 +516,45 @@ public class MatchIT extends GameEngine{
 	
 	// Called whenever a mouse button is released
 	public void mouseReleased(MouseEvent event) {
+		// Changes play Image on mouse button release
 		if(currentLevel == "menu"){
 			mouseX = event.getX();
 			mouseY = event.getY();
-			if((mouseX >= 50) && (mouseX <= 150)){
-				if((mouseY >= 350) && (mouseY <= 450)){
+			if((mouseX >= playX) && (mouseX <= playX + buttonWidth)){
+				if((mouseY >= playY) && (mouseY <= playY + buttonWidth)){
 					currentLevel = "lvl1";
-					playPressed = true;
+					playPressed = false;
 					return;
 				}
 			}
 		}
+		// Changes mute button Image on Mouse button release and mutes sound
+		if(currentLevel == "menu"){
+			mouseX = event.getX();
+			mouseY = event.getY();
+			if((mouseX >= muteX) && (mouseX <= muteX + buttonWidth)){
+				if((mouseY >= muteY) && (mouseY <= muteY + buttonWidth)){
+					mutePressed = false;
+					muted = true;
+					stopAudioLoop(menuMusic);
+					return;
+				}
+			}
+		}
+		// Changes exit button image on mouse button release and exits game
+		if(currentLevel == "menu"){
+			mouseX = event.getX();
+			mouseY = event.getY();
+			if((mouseX >= exitX) && (mouseX <= exitX + buttonWidth)){
+				if((mouseY >= exitY) && (mouseY <= exitY + buttonHeight)){
+					exitPressed = false;
+					System.exit(0);
+					return;
+				}
+			}
+		}
+		
+		
 		
 		if(currentLevel == "menu"){
 			return;

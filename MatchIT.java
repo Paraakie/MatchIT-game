@@ -39,7 +39,7 @@ public class MatchIT extends GameEngine{
 	AudioClip badMatch;
 	
 	boolean muted;
-	boolean playPressed, mutePressed, exitPressed, backPressed, playHover, muteHover, exitHover;
+	boolean playPressed, mutePressed, exitPressed, backPressed, playHover, muteHover, exitHover, backHover;
 	
 	double playX, playY;
 	double muteX, muteY;
@@ -76,6 +76,7 @@ public class MatchIT extends GameEngine{
 	exitHighlighted,
 	exitClicked,
 	backButton,
+	backHovered,
 	backClicked,
 	menuBackground,
 	gameOverBackground,
@@ -182,6 +183,7 @@ public class MatchIT extends GameEngine{
 		heartImage = loadImage("images_farm\\heart.png");
 		// back button
 		backButton = loadImage("images_farm\\back.png");
+		backHovered = loadImage("images_farm\\backHover.png");
 		backClicked = loadImage("images_farm\\backClicked.png");
 	}
 	
@@ -203,6 +205,10 @@ public class MatchIT extends GameEngine{
 			drawImage(backButton, backX, backY, backWidth, backHeight);
 		}else{
 			drawImage(backClicked, backX, backY, backWidth, backHeight);
+		}
+		
+		if(backHover == true){
+			drawImage(backHovered, backX, backY, backWidth, backHeight);
 		}
 		
 		// Circles, 2x, disappear when matched
@@ -433,8 +439,7 @@ public class MatchIT extends GameEngine{
 		playHover = false;
 		muteHover = false;
 		exitHover = false;
-		
-		//Audio
+		backHover = false;
 		
 
 		// Audio
@@ -539,6 +544,19 @@ public class MatchIT extends GameEngine{
 				}
 			}else{
 				exitHover = false;
+			}
+		}
+		
+		if(currentLevel == "lvl1"){
+			mouseX = event.getX();
+			mouseY = event.getY();
+			if((mouseX >= backX) && (mouseX <= backX + backWidth)){
+				if((mouseY >= backY) && (mouseY <= backY + backHeight)){
+					backHover = true;
+					drawLevel1();
+				}
+			}else{
+				backHover = false;
 			}
 		}
 	}

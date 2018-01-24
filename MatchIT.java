@@ -583,6 +583,7 @@ public class MatchIT extends GameEngine{
 				}
 			}
 		}
+		// Changes back image in level 1 on mouse button release || pause
 		if(currentLevel == "lvl1"){
 			mouseX = event.getX();
 			mouseY = event.getY();
@@ -878,7 +879,7 @@ public class MatchIT extends GameEngine{
 
 	// Check if Diam2 was clicked
 	public boolean wasDiam2_Clicked() {
-		if (movedObject != "square1") {
+		if (movedObject != "diam2") {
 			if ((mouseX >= diam2X) && (mouseX <= (diam2X + diam1Width))) {
 				if ((mouseY >= diam2Y) && (mouseY <= (diam2Y + diam1Height))) {
 					selectedObject = "diam2";

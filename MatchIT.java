@@ -39,11 +39,14 @@ public class MatchIT extends GameEngine{
 	AudioClip badMatch;
 	
 	boolean muted;
-	boolean playPressed, mutePressed, exitPressed;
+	boolean playPressed, mutePressed, exitPressed, backPressed;
 	
 	double playX, playY;
 	double muteX, muteY;
 	double exitX, exitY;
+	double backX, backY;
+	double backWidth;
+	double backHeight;
 	double buttonWidth;
 	double buttonHeight;
 	
@@ -72,6 +75,8 @@ public class MatchIT extends GameEngine{
 	exit,
 	exitHighlighted,
 	exitClicked,
+	backButton,
+	backClicked,
 	menuBackground,
 	gameOverBackground,
 	title;
@@ -165,7 +170,10 @@ public class MatchIT extends GameEngine{
 		// rectangle
 		rectImage = loadImage("images_farm\\box2.png");
 		// heart
-		heartImage = loadImage("images_farm\\heart.png"); 
+		heartImage = loadImage("images_farm\\heart.png");
+		// back button
+		backButton = loadImage("images_farm\\back.png");
+		backClicked = loadImage("images_farm\\backClicked.png");
 	}
 	
 	public void updateLevel1() {
@@ -181,6 +189,12 @@ public class MatchIT extends GameEngine{
 	public void drawLevel1() {
 		// Background
 		drawImage(background, 0, 0, width(), height());
+		
+		if(backPressed == false){
+			drawImage(backButton, backX, backY, backWidth, backHeight);
+		}else{
+			drawImage(backClicked, backX, backY, backWidth, backHeight);
+		}
 		
 		// Circles, 2x, disappear when matched
 		if(circlesMatched == false) {
@@ -219,7 +233,7 @@ public class MatchIT extends GameEngine{
 		
 		//Score and Player Instructions
 		changeColor(black);
-		drawText(10, 40, "" + score);
+		drawText(60, 40, "" + score);
 		drawText(250, height()/2, "Match the shapes!");
 	}
 	
@@ -386,6 +400,10 @@ public class MatchIT extends GameEngine{
 		exitY = 350;
 		buttonWidth = 100;
 		buttonHeight = 100;
+		backX = 3;
+		backY = 3;
+		backWidth = 40;
+		backHeight = 40;
 		
 
 		// Integers
@@ -402,6 +420,7 @@ public class MatchIT extends GameEngine{
 		playPressed = false;
 		mutePressed = false;
 		exitPressed = false;
+		backPressed = false;
 		
 		//Audio
 		
@@ -512,6 +531,17 @@ public class MatchIT extends GameEngine{
 				}
 			}
 		}
+		if(currentLevel == "lvl1"){
+			mouseX = event.getX();
+			mouseY = event.getY();
+			if((mouseX >= backX) && (mouseX <= backX + backWidth)){
+				if((mouseY >= backY) && (mouseY <= backY + backHeight)){
+					backPressed = true;
+					drawLevel1();
+					return;
+				}
+			}
+		}
 	}
 	
 	// Called whenever a mouse button is released
@@ -549,6 +579,17 @@ public class MatchIT extends GameEngine{
 				if((mouseY >= exitY) && (mouseY <= exitY + buttonHeight)){
 					exitPressed = false;
 					System.exit(0);
+					return;
+				}
+			}
+		}
+		if(currentLevel == "lvl1"){
+			mouseX = event.getX();
+			mouseY = event.getY();
+			if((mouseX >= backX) && (mouseX <= backX + backWidth)){
+				if((mouseY >= backY) && (mouseY <= backY + backHeight)){
+					backPressed = false;
+					currentLevel = "menu";
 					return;
 				}
 			}
@@ -709,14 +750,18 @@ public class MatchIT extends GameEngine{
 
 	public void goodMatch() {
 		score = score + 20;		
-		playAudio(goodMatch); // Audio implementation
+		if(muted == false){
+			playAudio(goodMatch); // Audio implementation
+		}
 	}
 
 	public void badMatch() {
 		score = score - 10;
 		life--;
 		movedObject = "none";
-		playAudio(badMatch); // Audio implementation
+		if(muted == false){
+			playAudio(badMatch); // Audio implementation
+		}
 	}
 
 	/*

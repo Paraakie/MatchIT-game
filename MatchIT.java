@@ -39,7 +39,7 @@ public class MatchIT extends GameEngine{
 	AudioClip badMatch;
 	
 	boolean muted;
-	boolean playPressed, mutePressed, exitPressed, backPressed;
+	boolean playPressed, mutePressed, exitPressed, backPressed, playHover, muteHover, exitHover;
 	
 	double playX, playY;
 	double muteX, muteY;
@@ -124,6 +124,15 @@ public class MatchIT extends GameEngine{
 			drawImage(exitHighlighted, exitX, exitY, buttonWidth, buttonHeight);
 		} else {
 			drawImage(exit, exitX, exitY, buttonWidth, buttonHeight);
+		}
+		if(playHover == true){
+			drawImage(playHighlighted, playX, playY, buttonWidth, buttonHeight);
+		}
+		if(muteHover == true){
+			drawImage(muteHighlighted, muteX, muteY, buttonWidth, buttonHeight);
+		}
+		if(exitHover == true){
+			drawImage(exitHighlighted, exitX, exitY, buttonWidth, buttonHeight);
 		}
 		
 		if(playPressed == true){
@@ -421,6 +430,9 @@ public class MatchIT extends GameEngine{
 		mutePressed = false;
 		exitPressed = false;
 		backPressed = false;
+		playHover = false;
+		muteHover = false;
+		exitHover = false;
 		
 		//Audio
 		
@@ -488,6 +500,48 @@ public class MatchIT extends GameEngine{
 	 */
 	
 	double mouseX, mouseY; // Mouse coordinates
+	
+	public void mouseMoved(MouseEvent event) {
+		// called when the mouse is moved over the play button - change the image to playHighlighted
+		if(currentLevel == "menu"){
+			mouseX = event.getX();
+			mouseY = event.getY();
+			if((mouseX >= playX) && (mouseX <= playX + buttonWidth)){
+				if((mouseY >= playY) && (mouseY <= playY + buttonHeight)){
+					playHover = true;
+					drawMenu();
+				}
+			}else{
+				playHover = false;
+			}
+		}
+		// called when the mouse is moved over the mute button - change the image to muteHighlighted
+		if(currentLevel == "menu"){
+			mouseX = event.getX();
+			mouseY = event.getY();
+			if((mouseX >= muteX) && (mouseX <= muteX + buttonWidth)){
+				if((mouseY >= muteY) && (mouseY <= muteY + buttonHeight)){
+					muteHover = true;
+					drawMenu();
+				}
+			}else{
+				muteHover = false;
+			}
+		}
+		// called when the mouse is moved over the exit button - change the image to exitHighlighted
+		if(currentLevel == "menu"){
+			mouseX = event.getX();
+			mouseY = event.getY();
+			if((mouseX >= exitX) && (mouseX <= exitX + buttonWidth)){
+				if((mouseY >= exitY) && (mouseY <= exitY + buttonHeight)){
+					exitHover = true;
+					drawMenu();
+				}
+			}else{
+				exitHover = false;
+			}
+		}
+	}
 	
 	// Called whenever a mouse button is clicked
 	// (pressed and released in the same position)

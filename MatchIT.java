@@ -11,7 +11,7 @@ import javax.imageio.*;
 import java.awt.*;
 import java.awt.geom.*;
 import javax.swing.*;
- ///jjj
+ 
 /*
  * Images and Audio used in this project 
  * are not ours, the licenses are in same 
@@ -24,8 +24,10 @@ public class MatchIT extends GameEngine {
 	}
 
 	/*
-	 * Global string to switch between levels/menu/winScreen menu = Main-menu; lvl1
-	 * = First level; gameOver = Game Over screen;
+	 * Global string to switch between levels/menu/winScreen 
+	 * menu = Main-menu; 
+	 * lvl1 = First level; 
+	 * gameOver = Game Over screen;
 	 */
 	String currentLevel;
 

@@ -629,8 +629,13 @@ public class MatchIT extends GameEngine {
 			if ((mouseX >= muteX) && (mouseX <= muteX + buttonWidth)) {
 				if ((mouseY >= muteY) && (mouseY <= muteY + buttonWidth)) {
 					mutePressed = false;
-					muted = true;
-					stopAudioLoop(menuMusic);
+					if(muted == false){
+						muted = true;
+						stopAudioLoop(menuMusic);
+					}else{
+						muted = false;
+						startAudioLoop(menuMusic);
+					}
 					return;
 				}
 			}

@@ -1,17 +1,13 @@
 
 /* Assignmet 2, 159.103
- * Chad Finch,
- * Sven Gerahrds
+ * Chad Finch, 16151947
+ * Sven Gerahrds, 15031719
  */
-import java.awt.event.MouseEvent; 
+
+import java.awt.event.MouseEvent;
 import java.awt.event.*;
-import java.awt.image.*;
-import java.io.*;
-import javax.imageio.*;
 import java.awt.*;
-import java.awt.geom.*;
-import javax.swing.*;
- 
+
 /*
  * Images and Audio used in this project 
  * are not ours, the licenses are in same 
@@ -24,9 +20,9 @@ public class MatchIT extends GameEngine {
 	}
 
 	/*
-	 * Global string to switch between levels/menu/winScreen 
-	 * menu = Main-menu; 
-	 * lvl1 = First level; 
+	 * Global string to switch between levels/menu/winScreen, 
+	 * menu = Main-menu, 
+	 * lvl1= First level, 
 	 * gameOver = Game Over screen;
 	 */
 	String currentLevel;
@@ -67,8 +63,10 @@ public class MatchIT extends GameEngine {
 	 */
 
 	// All images for menu
-	Image play, playHighlighted, playClicked, mute, muteHighlighted, muteClicked, exit, exitHighlighted, exitClicked,
-			backButton, backHovered, backClicked, menuBackground, gameOverBackground, title;
+	Image play, playHighlighted, playClicked;
+	Image mute, muteHighlighted, muteClicked;
+	Image exit, exitHighlighted, exitClicked;
+	Image backButton, backHovered, backClicked, menuBackground, title;
 
 	int menuOption = 0;
 
@@ -76,7 +74,6 @@ public class MatchIT extends GameEngine {
 		// Menu Images
 		title = loadImage("images_farm/title.png");
 		menuBackground = loadImage("images_farm/background1.png");
-		gameOverBackground = loadImage("images_farm/background3.png");
 		play = loadImage("Menu/play.png");
 		playHighlighted = loadImage("Menu/playHighlighted.png");
 		playClicked = loadImage("Menu/playClicked.png");
@@ -246,6 +243,15 @@ public class MatchIT extends GameEngine {
 	 * Game Over Screen
 	 */
 
+	Image gameOverBackground, homeButton;
+
+	double homeButtonX, homeButtonY, homeButtonWidth, homeButtonHeight;
+
+	public void initGameOverScreen() {
+		gameOverBackground = loadImage("images_farm\\background3.png");
+		homeButton = loadImage("images_farm\\home.png");
+	}
+
 	public void updateGameOverScreen() {
 	}
 
@@ -264,6 +270,9 @@ public class MatchIT extends GameEngine {
 		} else {
 			drawText(width() / 2 - 100, height() / 2 + 80, "Try again!", "Arial", 40);
 		}
+
+		// Draw Home Button
+		drawImage(homeButton, homeButtonX, homeButtonY, homeButtonWidth, homeButtonHeight);
 	}
 
 	/*
@@ -388,6 +397,11 @@ public class MatchIT extends GameEngine {
 		heartWidth = 40;
 		heartHeight = 40;
 
+		homeButtonX = 350;
+		homeButtonY = 340;
+		homeButtonWidth = 100;
+		homeButtonHeight = 100;
+
 		coin1_X = 310;
 		coin2_X = 370;
 		coin3_X = 430;
@@ -441,6 +455,8 @@ public class MatchIT extends GameEngine {
 		initMenu();
 		// Load images for lvl1
 		initLevel1();
+		// Load Images for gameOver
+		initGameOverScreen();
 		// Load Coin Animation
 		initCoin();
 	}
@@ -511,12 +527,8 @@ public class MatchIT extends GameEngine {
 			} else {
 				playHover = false;
 			}
-		}
-		// called when the mouse is moved over the mute button - change the image to
-		// muteHighlighted
-		if (currentLevel == "menu") {
-			mouseX = event.getX();
-			mouseY = event.getY();
+			// called when the mouse is moved over the mute button - change the image to
+			// muteHighlighted
 			if ((mouseX >= muteX) && (mouseX <= muteX + buttonWidth)) {
 				if ((mouseY >= muteY) && (mouseY <= muteY + buttonHeight)) {
 					muteHover = true;
@@ -525,12 +537,8 @@ public class MatchIT extends GameEngine {
 			} else {
 				muteHover = false;
 			}
-		}
-		// called when the mouse is moved over the exit button - change the image to
-		// exitHighlighted
-		if (currentLevel == "menu") {
-			mouseX = event.getX();
-			mouseY = event.getY();
+			// called when the mouse is moved over the exit button - change the image to
+			// exitHighlighted
 			if ((mouseX >= exitX) && (mouseX <= exitX + buttonWidth)) {
 				if ((mouseY >= exitY) && (mouseY <= exitY + buttonHeight)) {
 					exitHover = true;
@@ -551,6 +559,11 @@ public class MatchIT extends GameEngine {
 				}
 			} else {
 				backHover = false;
+			}
+
+			if (movedObject != "none") {
+				// Make movedObject follow the mouse
+				// Remember to store original coordinates
 			}
 		}
 	}
@@ -573,11 +586,6 @@ public class MatchIT extends GameEngine {
 					return;
 				}
 			}
-		}
-
-		if (currentLevel == "menu") {
-			mouseX = event.getX();
-			mouseY = event.getY();
 			if ((mouseX >= muteX) && (mouseX <= muteX + buttonWidth)) {
 				if ((mouseY >= muteY) && (mouseY <= muteY + buttonHeight)) {
 					mutePressed = true;
@@ -585,10 +593,6 @@ public class MatchIT extends GameEngine {
 					return;
 				}
 			}
-		}
-		if (currentLevel == "menu") {
-			mouseX = event.getX();
-			mouseY = event.getY();
 			if ((mouseX >= exitX) && (mouseX <= exitX + buttonWidth)) {
 				if ((mouseY >= exitY) && (mouseY <= exitY + buttonHeight)) {
 					exitPressed = true;
@@ -612,22 +616,16 @@ public class MatchIT extends GameEngine {
 
 	// Called whenever a mouse button is released
 	public void mouseReleased(MouseEvent event) {
-		// Changes play Image on mouse button release
 		if (currentLevel == "menu") {
 			mouseX = event.getX();
 			mouseY = event.getY();
 			if ((mouseX >= playX) && (mouseX <= playX + buttonWidth)) {
-				if ((mouseY >= playY) && (mouseY <= playY + buttonWidth)) {
+				if ((mouseY >= playY) && (mouseY <= playY + buttonHeight)) {
 					currentLevel = "lvl1";
 					playPressed = false;
 					return;
 				}
 			}
-		}
-		// Changes mute button Image on Mouse button release and mutes sound
-		if (currentLevel == "menu") {
-			mouseX = event.getX();
-			mouseY = event.getY();
 			if ((mouseX >= muteX) && (mouseX <= muteX + buttonWidth)) {
 				if ((mouseY >= muteY) && (mouseY <= muteY + buttonWidth)) {
 					mutePressed = false;
@@ -636,11 +634,6 @@ public class MatchIT extends GameEngine {
 					return;
 				}
 			}
-		}
-		// Changes exit button image on mouse button release and exits game
-		if (currentLevel == "menu") {
-			mouseX = event.getX();
-			mouseY = event.getY();
 			if ((mouseX >= exitX) && (mouseX <= exitX + buttonWidth)) {
 				if ((mouseY >= exitY) && (mouseY <= exitY + buttonHeight)) {
 					exitPressed = false;
@@ -648,22 +641,6 @@ public class MatchIT extends GameEngine {
 					return;
 				}
 			}
-		}
-		// Changes back image in level 1 on mouse button release || pause
-		if (currentLevel == "lvl1") {
-			mouseX = event.getX();
-			mouseY = event.getY();
-			if ((mouseX >= backX) && (mouseX <= backX + backWidth)) {
-				if ((mouseY >= backY) && (mouseY <= backY + backHeight)) {
-					backPressed = false;
-					currentLevel = "menu";
-					return;
-				}
-			}
-		}
-
-		if (currentLevel == "menu") {
-			return;
 		}
 
 		// Player controls; for playing the level(s)
@@ -685,7 +662,31 @@ public class MatchIT extends GameEngine {
 				}
 				selectedObject = "none";
 			}
+			// Changes back image in level 1 on mouse button release || pause
+			if ((mouseX >= backX) && (mouseX <= backX + backWidth)) {
+				if ((mouseY >= backY) && (mouseY <= backY + backHeight)) {
+					backPressed = false;
+					currentLevel = "menu";
+					return;
+				}
+			}
+
+			// Player controls; for playing the level(s)
+			// First Check if what was clicked, if it wasn't an object
+			boolean temp1 = wasObjectClicked(); // use temp variable to avoid using function as argument
+			if (temp1) {
+				if (movedObject == "none") {
+					movedObject = selectedObject;
+					System.out.println(movedObject + " is the moved Object\n"); // For testing purposes
+
+				} else {
+					matchObjects(movedObject, selectedObject);
+					movedObject = "none";
+				}
+				selectedObject = "none";
+			}
 		}
+
 	}
 
 	// Called whenever a key is pressed

@@ -68,7 +68,7 @@ public class MatchIT extends GameEngine {
 	Image exit, exitHighlighted, exitClicked;
 	Image backButton, backHovered, backClicked, menuBackground, title;
 
-	int menuOption = 0;
+	int menuOption = -1;
 
 	public void initMenu() {
 		// Menu Images
@@ -91,7 +91,6 @@ public class MatchIT extends GameEngine {
 	public void drawMenu() {
 		drawImage(menuBackground, 0, 0, width(), height());
 		drawImage(title, -10, -50, 800, 600);
-
 		// play
 		if (menuOption == 0) {
 			drawImage(playHighlighted, playX, playY, buttonWidth, buttonHeight);
@@ -105,8 +104,9 @@ public class MatchIT extends GameEngine {
 		} else {
 			drawImage(mute, muteX, muteY, buttonWidth, buttonHeight);
 		}
-
+		
 		// Exit
+		
 		if (menuOption == 2) {
 			drawImage(exitHighlighted, exitX, exitY, buttonWidth, buttonHeight);
 		} else {
@@ -188,14 +188,13 @@ public class MatchIT extends GameEngine {
 		// Background
 		drawImage(background, 0, 0, width(), height());
 
-		if (backPressed == false) {
 			drawImage(backButton, backX, backY, backWidth, backHeight);
-		} else {
-			drawImage(backClicked, backX, backY, backWidth, backHeight);
-		}
 
 		if (backHover == true) {
 			drawImage(backHovered, backX, backY, backWidth, backHeight);
+		}
+		if(backPressed == true){
+			drawImage(backClicked, backX, backY, backWidth, backHeight);
 		}
 
 		// Circles, 2x, disappear when matched
@@ -702,9 +701,12 @@ public class MatchIT extends GameEngine {
 			keyPressedGame(e);
 		}
 	}
-
+	//We have implemented the mouse pressed, released and moved events so we decided to remove the keyboard input.
+	//We have commented the code out to show that it did work.
+	
 	// Called whenever a key is pressed in the menu
 	public void keyPressedMenu(KeyEvent e) {
+		
 		// Up Arrow
 		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 			if (menuOption > 0) {

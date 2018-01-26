@@ -198,26 +198,59 @@ public class MatchIT extends GameEngine {
 
 		// Circles, 2x, disappear when matched
 		if (circlesMatched == false) {
-			drawImage(circleImage, circle1X, circle1Y, circle1Width, circle1Height);
-			drawImage(circleImage, circle2X, circle2Y, circle1Width, circle1Height);
+			if(movedObject != "circle1" && movedObject != "circle2") {
+				drawImage(circleImage, circle1X, circle1Y, circle1Width, circle1Height);
+				drawImage(circleImage, circle2X, circle2Y, circle1Width, circle1Height);
+			} else if (movedObject == "circle1") {	// Circle1 is stuck to the mouse
+				drawImage(circleImage, mouseX-circle1Width/2, mouseY-circle1Height/2, circle1Width, circle1Height);
+				drawImage(circleImage, circle2X, circle2Y, circle1Width, circle1Height);
+			} else {								// Circle2 is stuck to the mouse
+				drawImage(circleImage, circle1X, circle1Y, circle1Width, circle1Height);
+				drawImage(circleImage, mouseX-circle1Width/2, mouseY-circle1Height/2, circle1Width, circle1Height);
+			}
 		}
 
 		// Squares 2x, disappear when matched
 		if (squaresMatched == false) {
-			drawImage(squareImage, square1X, square1Y, square1Width, square1Height);
-			drawImage(squareImage, square2X, square2Y, square1Width, square1Height);
+			if(movedObject != "square1" && movedObject != "square2") {
+				drawImage(squareImage, square1X, square1Y, square1Width, square1Height);
+				drawImage(squareImage, square2X, square2Y, square1Width, square1Height);
+			} else if (movedObject == "square1") {	// Square1 is stuck to the mouse
+				drawImage(squareImage, mouseX-square1Width/2, mouseY-square1Height/2, square1Width, square1Height);
+				drawImage(squareImage, square2X, square2Y, square1Width, square1Height);
+			} else {								// Square2 is stuck to the mouse
+				drawImage(squareImage, square1X, square1Y, square1Width, square1Height);
+				drawImage(squareImage, mouseX-square1Width/2, mouseY-square1Height/2, square1Width, square1Height);
+			}
 		}
 
 		// Diamonds, 2x, disappear when matched
 		if (diamondsMatched == false) {
-			drawImage(diamImage, diam1X, diam1Y, diam1Width, diam1Height);
-			drawImage(diamImage, diam2X, diam2Y, diam1Width, diam1Height);
+			if(movedObject != "diam1" && movedObject != "diam2") {
+				drawImage(diamImage, diam1X, diam1Y, diam1Width, diam1Height);
+				drawImage(diamImage, diam2X, diam2Y, diam1Width, diam1Height);
+			} else if(movedObject == "diam1") {		// Diamond1 is stuck to the mouse
+				drawImage(diamImage, mouseX-diam1Width/2, mouseY-diam1Height/2, diam1Width, diam1Height);
+				drawImage(diamImage, diam2X, diam2Y, diam1Width, diam1Height);
+			} else {								// Diamond2 is stuck to the mouse
+				drawImage(diamImage, diam1X, diam1Y, diam1Width, diam1Height);
+				drawImage(diamImage, mouseX-diam1Width/2, mouseY-diam1Height/2, diam1Width, diam1Height);
+
+			}
 		}
 
 		// Rectangles, 2x, disappear when matched
 		if (rectanglesMatched == false) {
-			drawImage(rectImage, rect1X, rect1Y, rectWidth, rectHeight);
-			drawImage(rectImage, rect2X, rect2Y, rectWidth, rectHeight);
+			if(movedObject != "rect1" && movedObject != "rect2") {
+				drawImage(rectImage, rect1X, rect1Y, rectWidth, rectHeight);
+				drawImage(rectImage, rect2X, rect2Y, rectWidth, rectHeight);
+			} else if(movedObject == "rect1") {
+				drawImage(rectImage, mouseX-rectWidth/2, mouseY-rectHeight/2, rectWidth, rectHeight);
+				drawImage(rectImage, rect2X, rect2Y, rectWidth, rectHeight);
+			} else {
+				drawImage(rectImage, rect1X, rect1Y, rectWidth, rectHeight);
+				drawImage(rectImage, mouseX-rectWidth/2, mouseY-rectHeight/2, rectWidth, rectHeight);
+			}
 		}
 
 		// Hearts, 3x, disappear after badMatch
@@ -255,8 +288,7 @@ public class MatchIT extends GameEngine {
 		homeHighlighted = loadImage("images_farm\\homeHover.png");
 	}
 
-	public void updateGameOverScreen() {
-	}
+	public void updateGameOverScreen() {}
 
 	public void drawGameOverScreen() {
 		drawImage(gameOverBackground, 0, 0, width(), height());
@@ -266,9 +298,9 @@ public class MatchIT extends GameEngine {
 
 		changeColor(black);
 		drawText(width() / 2 - 165, height() / 2, "Final Score: " + score, "Arial", 50);
-		if (score <= 0) {
+		if (score >= 60 && score < 80) {
 			drawText(width() / 2 - 185, height() / 2 + 80, "Better Luck next time!", "Arial", 40);
-		} else if (score >= 30) {
+		} else if (score == 80) {
 			drawText(width() / 2 - 95, height() / 2 + 80, "You Win!", "Arial", 40);
 		} else {
 			drawText(width() / 2 - 100, height() / 2 + 80, "Try again!", "Arial", 40);
@@ -367,7 +399,7 @@ public class MatchIT extends GameEngine {
 	@Override
 	public void init() {
 		// Strings
-		currentLevel = "gameOver"; // Player starts in the menu
+		currentLevel = "menu"; // Player starts in the menu
 		selectedObject = "none"; // no object selected initially
 		movedObject = "none"; // no objects moved initially
 
@@ -529,11 +561,13 @@ public class MatchIT extends GameEngine {
 	double mouseX, mouseY; // Mouse coordinates
 
 	public void mouseMoved(MouseEvent event) {
+		//Always get Coordinates		
+		mouseX = event.getX();
+		mouseY = event.getY();
+		
 		// called when the mouse is moved over the play button - change the image to
 		// playHighlighted
 		if (currentLevel == "menu") {
-			mouseX = event.getX();
-			mouseY = event.getY();
 			if ((mouseX >= playX) && (mouseX <= playX + buttonWidth)) {
 				if ((mouseY >= playY) && (mouseY <= playY + buttonHeight)) {
 					playHover = true;
@@ -559,11 +593,10 @@ public class MatchIT extends GameEngine {
 			} else {
 				exitHover = false;
 			}
+			return;
 		}
 
 		if (currentLevel == "lvl1") {
-			mouseX = event.getX();
-			mouseY = event.getY();
 			if ((mouseX >= backX) && (mouseX <= backX + backWidth)) {
 				if ((mouseY >= backY) && (mouseY <= backY + backHeight)) {
 					backHover = true;
@@ -571,18 +604,10 @@ public class MatchIT extends GameEngine {
 			} else {
 				backHover = false;
 			}
-
-			if (movedObject != "none") {
-				// Make movedObject follow the mouse
-				// Remember to store original coordinates
-			}
+			return;
 		}
 		// For Home Button in gameOver Screen
 		if(currentLevel == "gameOver") {
-			// Get Mouse Coordinates
-			mouseX = event.getX();
-			mouseY = event.getY();
-			
 			// Temporary values to make if statement easier readable
 			double homeButton_CenterX = homeButtonX + circle1Width / 2; 
 			double homeButton_CenterY = homeButtonY + homeButtonHeight / 2;
@@ -598,10 +623,12 @@ public class MatchIT extends GameEngine {
 
 	// Called whenever a mouse button is pressed
 	public void mousePressed(MouseEvent event) {
+		//Always get Coordinates		
+		mouseX = event.getX();
+		mouseY = event.getY();
+				
 		//For Play, Mute and Exit button in menu Scene
 		if (currentLevel == "menu") {
-			mouseX = event.getX();
-			mouseY = event.getY();
 			if ((mouseX >= playX) && (mouseX <= playX + buttonWidth)) {
 				if ((mouseY >= playY) && (mouseY <= playY + buttonHeight)) {
 					playPressed = true;
@@ -620,26 +647,22 @@ public class MatchIT extends GameEngine {
 					return;
 				}
 			}
+			return;
 		}
 		
 		//For Back button in lvl1 Screen
 		if (currentLevel == "lvl1") {
-			mouseX = event.getX();
-			mouseY = event.getY();
 			if ((mouseX >= backX) && (mouseX <= backX + backWidth)) {
 				if ((mouseY >= backY) && (mouseY <= backY + backHeight)) {
 					backPressed = true;
 					return;
 				}
 			}
+			return;
 		}
 		
 		// For Home Button in gameOver Screen
 		if(currentLevel == "gameOver") {
-			// Get Mouse Coordinates
-			mouseX = event.getX();
-			mouseY = event.getY();
-			
 			// Temporary values to make if statement easier readable
 			double homeButton_CenterX = homeButtonX + circle1Width / 2; 
 			double homeButton_CenterY = homeButtonY + homeButtonHeight / 2;
@@ -650,14 +673,16 @@ public class MatchIT extends GameEngine {
 				return;
 			}
 		}
+		return;
 	}
 
 	// Called whenever a mouse button is released
 	public void mouseReleased(MouseEvent event) {
+		//Always get Coordinates		
+		mouseX = event.getX();
+		mouseY = event.getY();
+		
 		if (currentLevel == "menu") {
-			mouseX = event.getX();
-			mouseY = event.getY();
-			
 			// Changes play Image on mouse button release
 			if ((mouseX >= playX) && (mouseX <= playX + buttonWidth)) {
 				if ((mouseY >= playY) && (mouseY <= playY + buttonHeight)) {
@@ -688,14 +713,11 @@ public class MatchIT extends GameEngine {
 					return;
 				}
 			}
+			return;
 		}
 
 		// Player controls; for playing the level(s)
 		if (currentLevel == "lvl1") {
-			// Get Mouse Coordinates
-			mouseX = event.getX();
-			mouseY = event.getY();
-			
 			// Changes back image in level 1 on mouse button release || pause
 			if ((mouseX >= backX) && (mouseX <= backX + backWidth)) {
 				if ((mouseY >= backY) && (mouseY <= backY + backHeight)) {
@@ -710,7 +732,7 @@ public class MatchIT extends GameEngine {
 			if (temp) {
 				if (movedObject == "none") {
 					movedObject = selectedObject;
-					System.out.println(movedObject + " is the moved Object\n"); // For testing purposes
+					System.out.println(movedObject + " is the moved Object"); // For testing purposes
 
 				} else {
 					matchObjects(movedObject, selectedObject);
@@ -718,16 +740,11 @@ public class MatchIT extends GameEngine {
 				}
 				selectedObject = "none";
 			}
-			
-			
+			return;
 		}
 		
 		// For Home Button in gameOver Screen
 		if(currentLevel == "gameOver") {
-			// Get Mouse Coordinates
-			mouseX = event.getX();
-			mouseY = event.getY();
-			
 			// Temporary values to make if statement easier readable
 			double homeButton_CenterX = homeButtonX + circle1Width / 2; 
 			double homeButton_CenterY = homeButtonY + homeButtonHeight / 2;
@@ -797,8 +814,9 @@ public class MatchIT extends GameEngine {
 
 	/*
 	 * These two strings represents the Objects selected/moved none = no object
-	 * selected Possible Objects are: circle1 , circle2; square1, square 2; diam1,
-	 * diam2; rect1, rect2;
+	 * selected Possible Objects are: 
+	 * circle1 , circle2; square1, square 2; 
+	 * diam1, diam2; rect1, rect2;
 	 */
 	String selectedObject; // What object is currently selected
 	String movedObject; // What object is currently moved
@@ -939,7 +957,7 @@ public class MatchIT extends GameEngine {
 			
 			if (distance(circle1_CenterX, circle1_CenterY, mouseX, mouseY) <= circle1_Radious) {
 				selectedObject = "circle1";
-				System.out.println("Circle1 is the selected Object\n"); // For testing purposes
+				System.out.println("Circle1 is the selected Object"); // For testing purposes
 				return true;
 			}
 		}
@@ -957,7 +975,7 @@ public class MatchIT extends GameEngine {
 			if (distance(circle2_CenterX, circle2_CenterY, mouseX, mouseY) <= circle2_Radious) {
 						
 				selectedObject = "circle2";
-				System.out.println("Circle2 is the selected Object\n"); // For testing purposes
+				System.out.println("Circle2 is the selected Object"); // For testing purposes
 				return true;
 			}
 		}
@@ -970,7 +988,7 @@ public class MatchIT extends GameEngine {
 			if ((mouseX >= square1X) && (mouseX <= (square1X + square1Width))) {
 				if ((mouseY >= square1Y) && (mouseY <= (square1Y + square1Height))) {
 					selectedObject = "square1";
-					System.out.println("Square1 is the selected Object\n"); // For testing purposes
+					System.out.println("Square1 is the selected Object"); // For testing purposes
 					return true;
 				}
 			}
@@ -984,7 +1002,7 @@ public class MatchIT extends GameEngine {
 			if ((mouseX >= square2X) && (mouseX <= (square2X + square1Width))) {
 				if ((mouseY >= square2Y) && (mouseY <= (square2Y + square1Height))) {
 					selectedObject = "square2";
-					System.out.println("Square2 is the selected Object\n"); // For testing purposes
+					System.out.println("Square2 is the selected Object"); // For testing purposes
 					return true;
 				}
 			}
@@ -998,7 +1016,7 @@ public class MatchIT extends GameEngine {
 			if ((mouseX >= diam1X) && (mouseX <= (diam1X + diam1Width))) {
 				if ((mouseY >= diam1Y) && (mouseY <= (diam1Y + diam1Height))) {
 					selectedObject = "diam1";
-					System.out.println("Diam1 is the selected Object\n"); // For testing purposes
+					System.out.println("Diam1 is the selected Object"); // For testing purposes
 					return true;
 				}
 			}
@@ -1012,7 +1030,7 @@ public class MatchIT extends GameEngine {
 			if ((mouseX >= diam2X) && (mouseX <= (diam2X + diam1Width))) {
 				if ((mouseY >= diam2Y) && (mouseY <= (diam2Y + diam1Height))) {
 					selectedObject = "diam2";
-					System.out.println("Diam2 is the selected Object\n"); // For testing purposes
+					System.out.println("Diam2 is the selected Object"); // For testing purposes
 					return true;
 				}
 			}
@@ -1026,7 +1044,7 @@ public class MatchIT extends GameEngine {
 			if ((mouseX >= rect1X) && (mouseX <= (rect1X + rectWidth))) {
 				if ((mouseY >= rect1Y) && (mouseY <= (rect1Y + rectHeight))) {
 					selectedObject = "rect1";
-					System.out.println("Rect1 is the selected Object\n"); // For testing purposes
+					System.out.println("Rect1 is the selected Object"); // For testing purposes
 					return true;
 				}
 			}
@@ -1040,7 +1058,7 @@ public class MatchIT extends GameEngine {
 			if ((mouseX >= rect2X) && (mouseX <= (rect2X + rectWidth))) {
 				if ((mouseY >= rect2Y) && (mouseY <= (rect2Y + rectHeight))) {
 					selectedObject = "rect2";
-					System.out.println("Rect2 is the selected Object\n"); // For testing purposes
+					System.out.println("Rect2 is the selected Object"); // For testing purposes
 					return true;
 				}
 			}

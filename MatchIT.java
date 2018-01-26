@@ -1,7 +1,7 @@
 
 /* Assignmet 2, 159.103
- * Chad Finch, 16151947
- * Sven Gerahrds, 15031719
+ * Chad Finch,
+ * Sven Gerahrds,
  */
 
 import java.awt.event.MouseEvent;
@@ -19,12 +19,10 @@ public class MatchIT extends GameEngine {
 		createGame(new MatchIT());
 	}
 
-	/*
-	 * Global string to switch between levels/menu/winScreen, 
-	 * menu = Main-menu, 
-	 * lvl1= First level, 
-	 * gameOver = Game Over screen;
-	 */
+	// Global string to switch between levels/menu/winScreen
+	// menu = Main-menu;
+	// lvl1 = First level;
+	// gameOver = Game Over screen;
 	String currentLevel;
 
 	/*
@@ -37,7 +35,8 @@ public class MatchIT extends GameEngine {
 	AudioClip badMatch;
 
 	boolean muted;
-	boolean playPressed, mutePressed, exitPressed, backPressed, playHover, muteHover, exitHover, backHover;
+	boolean playPressed, mutePressed, exitPressed, backPressed; 
+	boolean playHover, muteHover, exitHover, backHover; 
 
 	double playX, playY;
 	double muteX, muteY;
@@ -68,7 +67,7 @@ public class MatchIT extends GameEngine {
 	Image exit, exitHighlighted, exitClicked;
 	Image backButton, backHovered, backClicked, menuBackground, title;
 
-	int menuOption = -1;
+	int menuOption;
 
 	public void initMenu() {
 		// Menu Images
@@ -91,42 +90,41 @@ public class MatchIT extends GameEngine {
 	public void drawMenu() {
 		drawImage(menuBackground, 0, 0, width(), height());
 		drawImage(title, -10, -50, 800, 600);
+
 		// play
 		if (menuOption == 0) {
 			drawImage(playHighlighted, playX, playY, buttonWidth, buttonHeight);
 		} else {
 			drawImage(play, playX, playY, buttonWidth, buttonHeight);
 		}
-
+		if (playHover == true) {
+			drawImage(playHighlighted, playX, playY, buttonWidth, buttonHeight);
+		}
+		if (playPressed == true) {
+			drawImage(playClicked, playX, playY, buttonWidth, buttonHeight);
+		}
+		
 		// Mute
 		if (menuOption == 1) {
 			drawImage(muteHighlighted, muteX, muteY, buttonWidth, buttonHeight);
 		} else {
 			drawImage(mute, muteX, muteY, buttonWidth, buttonHeight);
 		}
-		
+		if (muteHover == true) {
+			drawImage(muteHighlighted, muteX, muteY, buttonWidth, buttonHeight);
+		}
+		if (mutePressed == true) {
+			drawImage(muteClicked, muteX, muteY, buttonWidth, buttonHeight);
+		}
+
 		// Exit
-		
 		if (menuOption == 2) {
 			drawImage(exitHighlighted, exitX, exitY, buttonWidth, buttonHeight);
 		} else {
 			drawImage(exit, exitX, exitY, buttonWidth, buttonHeight);
 		}
-		if (playHover == true) {
-			drawImage(playHighlighted, playX, playY, buttonWidth, buttonHeight);
-		}
-		if (muteHover == true) {
-			drawImage(muteHighlighted, muteX, muteY, buttonWidth, buttonHeight);
-		}
 		if (exitHover == true) {
 			drawImage(exitHighlighted, exitX, exitY, buttonWidth, buttonHeight);
-		}
-
-		if (playPressed == true) {
-			drawImage(playClicked, playX, playY, buttonWidth, buttonHeight);
-		}
-		if (mutePressed == true) {
-			drawImage(muteClicked, muteX, muteY, buttonWidth, buttonHeight);
 		}
 		if (exitPressed == true) {
 			drawImage(exitClicked, exitX, exitY, buttonWidth, buttonHeight);
@@ -187,9 +185,10 @@ public class MatchIT extends GameEngine {
 	public void drawLevel1() {
 		// Background
 		drawImage(background, 0, 0, width(), height());
-
-			drawImage(backButton, backX, backY, backWidth, backHeight);
-
+		
+		//Draw Back Button
+		drawImage(backButton, backX, backY, backWidth, backHeight);
+		
 		if (backHover == true) {
 			drawImage(backHovered, backX, backY, backWidth, backHeight);
 		}
@@ -242,13 +241,18 @@ public class MatchIT extends GameEngine {
 	 * Game Over Screen
 	 */
 
-	Image gameOverBackground, homeButton;
+	Image gameOverBackground;
+	Image homeButton, homeClicked, homeHighlighted;
 
 	double homeButtonX, homeButtonY, homeButtonWidth, homeButtonHeight;
+	
+	boolean homePressed, homeHover;
 
 	public void initGameOverScreen() {
 		gameOverBackground = loadImage("images_farm\\background3.png");
 		homeButton = loadImage("images_farm\\home.png");
+		homeClicked = loadImage("images_farm\\homeClick.png"); 
+		homeHighlighted = loadImage("images_farm\\homeHover.png");
 	}
 
 	public void updateGameOverScreen() {
@@ -256,7 +260,7 @@ public class MatchIT extends GameEngine {
 
 	public void drawGameOverScreen() {
 		drawImage(gameOverBackground, 0, 0, width(), height());
-
+		
 		// Draw Coins
 		drawCoin();
 
@@ -272,6 +276,13 @@ public class MatchIT extends GameEngine {
 
 		// Draw Home Button
 		drawImage(homeButton, homeButtonX, homeButtonY, homeButtonWidth, homeButtonHeight);
+		if(homeHover == true) {
+			drawImage(homeHighlighted, homeButtonX, homeButtonY, homeButtonWidth, homeButtonHeight);
+		}
+		if(homePressed == true){
+			drawImage(homeClicked, homeButtonX, homeButtonY, homeButtonWidth, homeButtonHeight);
+		}
+		
 	}
 
 	/*
@@ -356,7 +367,7 @@ public class MatchIT extends GameEngine {
 	@Override
 	public void init() {
 		// Strings
-		currentLevel = "menu"; // Player starts in the menu
+		currentLevel = "gameOver"; // Player starts in the menu
 		selectedObject = "none"; // no object selected initially
 		movedObject = "none"; // no objects moved initially
 
@@ -425,6 +436,7 @@ public class MatchIT extends GameEngine {
 		backHeight = 40;
 
 		// Integers
+		menuOption = -1;
 		score = 0;
 		life = 3;
 		coinFrame = 0;
@@ -435,14 +447,18 @@ public class MatchIT extends GameEngine {
 		diamondsMatched = false;
 		rectanglesMatched = false;
 		muted = false;
+		
 		playPressed = false;
 		mutePressed = false;
 		exitPressed = false;
 		backPressed = false;
+		homePressed = false;
+		
 		playHover = false;
 		muteHover = false;
 		exitHover = false;
 		backHover = false;
+		homeHover = false;
 
 		// Audio
 		initAudio();
@@ -521,7 +537,6 @@ public class MatchIT extends GameEngine {
 			if ((mouseX >= playX) && (mouseX <= playX + buttonWidth)) {
 				if ((mouseY >= playY) && (mouseY <= playY + buttonHeight)) {
 					playHover = true;
-					drawMenu();
 				}
 			} else {
 				playHover = false;
@@ -531,7 +546,6 @@ public class MatchIT extends GameEngine {
 			if ((mouseX >= muteX) && (mouseX <= muteX + buttonWidth)) {
 				if ((mouseY >= muteY) && (mouseY <= muteY + buttonHeight)) {
 					muteHover = true;
-					drawMenu();
 				}
 			} else {
 				muteHover = false;
@@ -541,7 +555,6 @@ public class MatchIT extends GameEngine {
 			if ((mouseX >= exitX) && (mouseX <= exitX + buttonWidth)) {
 				if ((mouseY >= exitY) && (mouseY <= exitY + buttonHeight)) {
 					exitHover = true;
-					drawMenu();
 				}
 			} else {
 				exitHover = false;
@@ -554,7 +567,6 @@ public class MatchIT extends GameEngine {
 			if ((mouseX >= backX) && (mouseX <= backX + backWidth)) {
 				if ((mouseY >= backY) && (mouseY <= backY + backHeight)) {
 					backHover = true;
-					drawLevel1();
 				}
 			} else {
 				backHover = false;
@@ -565,50 +577,77 @@ public class MatchIT extends GameEngine {
 				// Remember to store original coordinates
 			}
 		}
-	}
-
-	// Called whenever a mouse button is clicked
-	// (pressed and released in the same position)
-	public void mouseClicked(MouseEvent event) {
-
+		// For Home Button in gameOver Screen
+		if(currentLevel == "gameOver") {
+			// Get Mouse Coordinates
+			mouseX = event.getX();
+			mouseY = event.getY();
+			
+			// Temporary values to make if statement easier readable
+			double homeButton_CenterX = homeButtonX + circle1Width / 2; 
+			double homeButton_CenterY = homeButtonY + homeButtonHeight / 2;
+			double homeButton_Radious =  homeButtonHeight /2;
+			
+			if(distance(homeButton_CenterX, homeButton_CenterY, mouseX, mouseY) <= homeButton_Radious) {
+				homeHover = true;
+			} else {
+				homeHover = false;
+			}
+		}
 	}
 
 	// Called whenever a mouse button is pressed
 	public void mousePressed(MouseEvent event) {
+		//For Play, Mute and Exit button in menu Scene
 		if (currentLevel == "menu") {
 			mouseX = event.getX();
 			mouseY = event.getY();
 			if ((mouseX >= playX) && (mouseX <= playX + buttonWidth)) {
 				if ((mouseY >= playY) && (mouseY <= playY + buttonHeight)) {
 					playPressed = true;
-					drawMenu();
 					return;
 				}
 			}
 			if ((mouseX >= muteX) && (mouseX <= muteX + buttonWidth)) {
 				if ((mouseY >= muteY) && (mouseY <= muteY + buttonHeight)) {
 					mutePressed = true;
-					drawMenu();
 					return;
 				}
 			}
 			if ((mouseX >= exitX) && (mouseX <= exitX + buttonWidth)) {
 				if ((mouseY >= exitY) && (mouseY <= exitY + buttonHeight)) {
 					exitPressed = true;
-					drawMenu();
 					return;
 				}
 			}
 		}
+		
+		//For Back button in lvl1 Screen
 		if (currentLevel == "lvl1") {
 			mouseX = event.getX();
 			mouseY = event.getY();
 			if ((mouseX >= backX) && (mouseX <= backX + backWidth)) {
 				if ((mouseY >= backY) && (mouseY <= backY + backHeight)) {
 					backPressed = true;
-					drawLevel1();
 					return;
 				}
+			}
+		}
+		
+		// For Home Button in gameOver Screen
+		if(currentLevel == "gameOver") {
+			// Get Mouse Coordinates
+			mouseX = event.getX();
+			mouseY = event.getY();
+			
+			// Temporary values to make if statement easier readable
+			double homeButton_CenterX = homeButtonX + circle1Width / 2; 
+			double homeButton_CenterY = homeButtonY + homeButtonHeight / 2;
+			double homeButton_Radious =  homeButtonHeight /2;
+			
+			if(distance(homeButton_CenterX, homeButton_CenterY, mouseX, mouseY) <= homeButton_Radious) {
+				homePressed = true;
+				return;
 			}
 		}
 	}
@@ -618,6 +657,8 @@ public class MatchIT extends GameEngine {
 		if (currentLevel == "menu") {
 			mouseX = event.getX();
 			mouseY = event.getY();
+			
+			// Changes play Image on mouse button release
 			if ((mouseX >= playX) && (mouseX <= playX + buttonWidth)) {
 				if ((mouseY >= playY) && (mouseY <= playY + buttonHeight)) {
 					currentLevel = "lvl1";
@@ -625,6 +666,7 @@ public class MatchIT extends GameEngine {
 					return;
 				}
 			}
+			// Changes mute button Image on Mouse button release and mutes sound
 			if ((mouseX >= muteX) && (mouseX <= muteX + buttonWidth)) {
 				if ((mouseY >= muteY) && (mouseY <= muteY + buttonWidth)) {
 					mutePressed = false;
@@ -638,6 +680,7 @@ public class MatchIT extends GameEngine {
 					return;
 				}
 			}
+			// Changes exit button image on mouse button release and exits game
 			if ((mouseX >= exitX) && (mouseX <= exitX + buttonWidth)) {
 				if ((mouseY >= exitY) && (mouseY <= exitY + buttonHeight)) {
 					exitPressed = false;
@@ -652,8 +695,17 @@ public class MatchIT extends GameEngine {
 			// Get Mouse Coordinates
 			mouseX = event.getX();
 			mouseY = event.getY();
+			
+			// Changes back image in level 1 on mouse button release || pause
+			if ((mouseX >= backX) && (mouseX <= backX + backWidth)) {
+				if ((mouseY >= backY) && (mouseY <= backY + backHeight)) {
+					backPressed = false;
+					currentLevel = "menu";
+					return;
+				}
+			}
 
-			// First Check if what was clicked, if it wasn't an object
+			// Check if what was clicked, if it wasn't an object
 			boolean temp = wasObjectClicked(); // use temp variable to avoid using function as argument
 			if (temp) {
 				if (movedObject == "none") {
@@ -666,33 +718,29 @@ public class MatchIT extends GameEngine {
 				}
 				selectedObject = "none";
 			}
-			// Changes back image in level 1 on mouse button release || pause
-			if ((mouseX >= backX) && (mouseX <= backX + backWidth)) {
-				if ((mouseY >= backY) && (mouseY <= backY + backHeight)) {
-					backPressed = false;
-					currentLevel = "menu";
-					return;
-				}
-			}
-
-			// Player controls; for playing the level(s)
-			// First Check if what was clicked, if it wasn't an object
-			boolean temp1 = wasObjectClicked(); // use temp variable to avoid using function as argument
-			if (temp1) {
-				if (movedObject == "none") {
-					movedObject = selectedObject;
-					System.out.println(movedObject + " is the moved Object\n"); // For testing purposes
-
-				} else {
-					matchObjects(movedObject, selectedObject);
-					movedObject = "none";
-				}
-				selectedObject = "none";
+			
+			
+		}
+		
+		// For Home Button in gameOver Screen
+		if(currentLevel == "gameOver") {
+			// Get Mouse Coordinates
+			mouseX = event.getX();
+			mouseY = event.getY();
+			
+			// Temporary values to make if statement easier readable
+			double homeButton_CenterX = homeButtonX + circle1Width / 2; 
+			double homeButton_CenterY = homeButtonY + homeButtonHeight / 2;
+			double homeButton_Radious =  homeButtonHeight /2;
+			
+			if(distance(homeButton_CenterX, homeButton_CenterY, mouseX, mouseY) <= homeButton_Radious) {
+				homePressed = false;
+				currentLevel = "menu";
+				return;
 			}
 		}
-
 	}
-
+	
 	// Called whenever a key is pressed
 	public void keyPressed(KeyEvent e) {
 		if (currentLevel == "menu") {
@@ -701,12 +749,12 @@ public class MatchIT extends GameEngine {
 			keyPressedGame(e);
 		}
 	}
+
 	//We have implemented the mouse pressed, released and moved events so we decided to remove the keyboard input.
 	//We have commented the code out to show that it did work.
 	
 	// Called whenever a key is pressed in the menu
 	public void keyPressedMenu(KeyEvent e) {
-		
 		// Up Arrow
 		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 			if (menuOption > 0) {
@@ -884,8 +932,12 @@ public class MatchIT extends GameEngine {
 	// Check if Circle1 was clicked
 	public boolean wasCircle1_Clicked() {
 		if (movedObject != "circle1") {
-			if (distance(circle1X + circle1Width / 2, circle1Y + circle1Height / 2, mouseX, mouseY) <= circle1Height
-					/ 2) {
+			// Temporary values to make if statement easier readable
+			double circle1_CenterX = circle1X + circle1Width / 2;
+			double circle1_CenterY = circle1Y + circle1Height / 2;
+			double circle1_Radious = circle1Height/ 2; 
+			
+			if (distance(circle1_CenterX, circle1_CenterY, mouseX, mouseY) <= circle1_Radious) {
 				selectedObject = "circle1";
 				System.out.println("Circle1 is the selected Object\n"); // For testing purposes
 				return true;
@@ -897,8 +949,13 @@ public class MatchIT extends GameEngine {
 	// Check if Circle2 was clicked
 	public boolean wasCircle2_Clicked() {
 		if (movedObject != "circle2") {
-			if (distance(circle2X + circle1Width / 2, circle2Y + circle1Height / 2, mouseX, mouseY) <= circle1Height
-					/ 2) {
+			// Temporary values to make if statement easier readable
+			double circle2_CenterX = circle2X + circle1Width / 2;
+			double circle2_CenterY = circle2Y + circle1Height / 2;
+			double circle2_Radious = circle1Height/ 2; 
+			
+			if (distance(circle2_CenterX, circle2_CenterY, mouseX, mouseY) <= circle2_Radious) {
+						
 				selectedObject = "circle2";
 				System.out.println("Circle2 is the selected Object\n"); // For testing purposes
 				return true;

@@ -1,7 +1,6 @@
-
 /* Assignmet 2, 159.103
- * Chad Finch,
- * Sven Gerahrds,
+ * Chad Finch, 
+ * Sven Gerahrds, 
  */
 
 import java.awt.event.MouseEvent;
@@ -151,7 +150,19 @@ public class MatchIT extends GameEngine {
 
 	// All Images for Lvl1
 	Image heartImage, squareImage, circleImage, diamImage, rectImage, background;
-
+	
+	//Function to reset all the stats so you can play it over and over again
+	public void resetlvl1() {
+		score = 0;
+		life = 3;
+		circlesMatched = false;
+		squaresMatched = false;
+		diamondsMatched = false;
+		rectanglesMatched = false;
+		selectedObject = "none";
+		movedObject = "none";
+	}
+	
 	// load all images here
 	public void initLevel1() {
 		// background
@@ -176,9 +187,11 @@ public class MatchIT extends GameEngine {
 		// Move on to gameOver Screen
 		if (life <= 0) { // Once all Lives are gone
 			currentLevel = "gameOver";
+			return;
 		}
 		if (circlesMatched && squaresMatched && diamondsMatched && rectanglesMatched) { // Once all Objects are Matched
 			currentLevel = "gameOver";
+			return;
 		}
 	}
 
@@ -299,11 +312,11 @@ public class MatchIT extends GameEngine {
 		changeColor(black);
 		drawText(width() / 2 - 165, height() / 2, "Final Score: " + score, "Arial", 50);
 		if (score >= 60 && score < 80) {
-			drawText(width() / 2 - 185, height() / 2 + 80, "Better Luck next time!", "Arial", 40);
+			drawText(width() / 2 - 185, height() / 2 + 50, "Better Luck next time!", "Arial", 40);
 		} else if (score == 80) {
-			drawText(width() / 2 - 95, height() / 2 + 80, "You Win!", "Arial", 40);
+			drawText(width() / 2 - 95, height() / 2 + 50, "You Win!", "Arial", 40);
 		} else {
-			drawText(width() / 2 - 100, height() / 2 + 80, "Try again!", "Arial", 40);
+			drawText(width() / 2 - 100, height() / 2 + 50, "Try again!", "Arial", 40);
 		}
 
 		// Draw Home Button
@@ -447,7 +460,7 @@ public class MatchIT extends GameEngine {
 		coin1_X = 310;
 		coin2_X = 370;
 		coin3_X = 430;
-		coin_Y = 150;
+		coin_Y = 80;
 		coinWidth = 60;
 		coinHeight = 60;
 
@@ -512,6 +525,7 @@ public class MatchIT extends GameEngine {
 	@Override
 	public void update(double dt) {
 		if (currentLevel == "menu") { // Main Menu
+			resetlvl1();
 			updateMenu();
 
 		} else if (currentLevel == "lvl1") { // Level 1
@@ -957,7 +971,7 @@ public class MatchIT extends GameEngine {
 			
 			if (distance(circle1_CenterX, circle1_CenterY, mouseX, mouseY) <= circle1_Radious) {
 				selectedObject = "circle1";
-				System.out.println("Circle1 is the selected Object"); // For testing purposes
+				System.out.println("circle1 is the selected Object"); // For testing purposes
 				return true;
 			}
 		}
@@ -975,7 +989,7 @@ public class MatchIT extends GameEngine {
 			if (distance(circle2_CenterX, circle2_CenterY, mouseX, mouseY) <= circle2_Radious) {
 						
 				selectedObject = "circle2";
-				System.out.println("Circle2 is the selected Object"); // For testing purposes
+				System.out.println("circle2 is the selected Object"); // For testing purposes
 				return true;
 			}
 		}
@@ -988,7 +1002,7 @@ public class MatchIT extends GameEngine {
 			if ((mouseX >= square1X) && (mouseX <= (square1X + square1Width))) {
 				if ((mouseY >= square1Y) && (mouseY <= (square1Y + square1Height))) {
 					selectedObject = "square1";
-					System.out.println("Square1 is the selected Object"); // For testing purposes
+					System.out.println("square1 is the selected Object"); // For testing purposes
 					return true;
 				}
 			}
@@ -1002,7 +1016,7 @@ public class MatchIT extends GameEngine {
 			if ((mouseX >= square2X) && (mouseX <= (square2X + square1Width))) {
 				if ((mouseY >= square2Y) && (mouseY <= (square2Y + square1Height))) {
 					selectedObject = "square2";
-					System.out.println("Square2 is the selected Object"); // For testing purposes
+					System.out.println("square2 is the selected Object"); // For testing purposes
 					return true;
 				}
 			}
@@ -1016,7 +1030,7 @@ public class MatchIT extends GameEngine {
 			if ((mouseX >= diam1X) && (mouseX <= (diam1X + diam1Width))) {
 				if ((mouseY >= diam1Y) && (mouseY <= (diam1Y + diam1Height))) {
 					selectedObject = "diam1";
-					System.out.println("Diam1 is the selected Object"); // For testing purposes
+					System.out.println("diam1 is the selected Object"); // For testing purposes
 					return true;
 				}
 			}
@@ -1030,7 +1044,7 @@ public class MatchIT extends GameEngine {
 			if ((mouseX >= diam2X) && (mouseX <= (diam2X + diam1Width))) {
 				if ((mouseY >= diam2Y) && (mouseY <= (diam2Y + diam1Height))) {
 					selectedObject = "diam2";
-					System.out.println("Diam2 is the selected Object"); // For testing purposes
+					System.out.println("diam2 is the selected Object"); // For testing purposes
 					return true;
 				}
 			}
@@ -1044,7 +1058,7 @@ public class MatchIT extends GameEngine {
 			if ((mouseX >= rect1X) && (mouseX <= (rect1X + rectWidth))) {
 				if ((mouseY >= rect1Y) && (mouseY <= (rect1Y + rectHeight))) {
 					selectedObject = "rect1";
-					System.out.println("Rect1 is the selected Object"); // For testing purposes
+					System.out.println("rect1 is the selected Object"); // For testing purposes
 					return true;
 				}
 			}
@@ -1058,7 +1072,7 @@ public class MatchIT extends GameEngine {
 			if ((mouseX >= rect2X) && (mouseX <= (rect2X + rectWidth))) {
 				if ((mouseY >= rect2Y) && (mouseY <= (rect2Y + rectHeight))) {
 					selectedObject = "rect2";
-					System.out.println("Rect2 is the selected Object"); // For testing purposes
+					System.out.println("rect2 is the selected Object"); // For testing purposes
 					return true;
 				}
 			}

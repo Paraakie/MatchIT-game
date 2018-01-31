@@ -1,3 +1,4 @@
+
 /* Assignmet 2, 159.103
  * Chad Finch, 
  * Sven Gerahrds, 
@@ -140,10 +141,12 @@ public class MatchIT extends GameEngine {
 	double diam1X, diam1Y, diam2X, diam2Y, diam1Width, diam1Height;
 	double rect1X, rect1Y, rect2X, rect2Y, rectWidth, rectHeight;
 	double heart1X, heart2X, heart3X, heartY, heartWidth, heartHeight;
-
+	double lvl1_timer, lvl1_duration; // For timer, once timer runs out player loses points
+	
 	int score; // The value which will hold the score, also be used for gameOverScreen
 	int life; // Start with 3 lives; You lose 1 life if you match wrong;
-
+	int lvl1_timer4F; //4 Digit Timer Number
+	
 	// Booleans, keep track of whether the Objects have been matched, once matched
 	// they will disappear
 	boolean circlesMatched, squaresMatched, diamondsMatched, rectanglesMatched;
@@ -161,6 +164,7 @@ public class MatchIT extends GameEngine {
 		rectanglesMatched = false;
 		selectedObject = "none";
 		movedObject = "none";
+		lvl1_timer = 0;
 	}
 	
 	// load all images here
@@ -182,14 +186,29 @@ public class MatchIT extends GameEngine {
 		backHovered = loadImage("images_farm\\backHover.png");
 		backClicked = loadImage("images_farm\\backClicked.png");
 	}
-
-	public void updateLevel1() {
-		// Move on to gameOver Screen
-		if (life <= 0) { // Once all Lives are gone
+	
+	public void updateLevel1(double dt) {
+		//update timer
+		lvl1_timer += dt;
+		lvl1_timer4F = (int) (lvl1_timer * 100);
+		
+		// Move on to gameOver Screen, when...
+		
+		// Once the timer is up
+		if (lvl1_timer > lvl1_duration) {
+			// Penalties for running out of time
+			badMatch();
+			
 			currentLevel = "gameOver";
 			return;
 		}
-		if (circlesMatched && squaresMatched && diamondsMatched && rectanglesMatched) { // Once all Objects are Matched
+		// Once all Lives are gone
+		if (life <= 0) { 
+			currentLevel = "gameOver";
+			return;
+		}
+		// Once all Objects are Matched
+		if (circlesMatched && squaresMatched && diamondsMatched && rectanglesMatched) { 
 			currentLevel = "gameOver";
 			return;
 		}
@@ -281,6 +300,11 @@ public class MatchIT extends GameEngine {
 		changeColor(black);
 		drawText(60, 40, "" + score);
 		drawText(250, height() / 2, "Match the shapes!");
+		
+		// Draw Timer
+		drawText(200, height() / 2 + 30, "" + lvl1_timer4F / 100+ "." +lvl1_timer4F%100+ " seconds remaining");
+		System.out.println(""+lvl1_timer4F); //just for testing will deleted later
+		
 	}
 
 	/*
@@ -451,6 +475,9 @@ public class MatchIT extends GameEngine {
 		heartY = 10;
 		heartWidth = 40;
 		heartHeight = 40;
+		
+		lvl1_timer = 0;
+		lvl1_duration = 12.0;
 
 		homeButtonX = 350;
 		homeButtonY = 340;
@@ -484,6 +511,7 @@ public class MatchIT extends GameEngine {
 		menuOption = -1;
 		score = 0;
 		life = 3;
+		lvl1_timer4F = 0;
 		coinFrame = 0;
 
 		// Booleans
@@ -529,7 +557,7 @@ public class MatchIT extends GameEngine {
 			updateMenu();
 
 		} else if (currentLevel == "lvl1") { // Level 1
-			updateLevel1();
+			updateLevel1(dt);
 
 		} else if (currentLevel == "gameOver") { // Game Over Screen
 			updateGameOverScreen();

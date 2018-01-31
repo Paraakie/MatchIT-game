@@ -303,7 +303,7 @@ public class MatchIT extends GameEngine {
 		
 		// Draw Timer
 		drawText(200, height() / 2 + 30, "" + lvl1_timer4F / 100+ "." +lvl1_timer4F%100+ " seconds remaining");
-		System.out.println(""+lvl1_timer4F); //just for testing will deleted later
+		//System.out.println(""+lvl1_timer4F); //just for testing will deleted later
 		
 	}
 

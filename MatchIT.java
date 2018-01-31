@@ -71,8 +71,8 @@ public class MatchIT extends GameEngine {
 
 	public void initMenu() {
 		// Menu Images
-		title = loadImage("images_farm/title.png");
-		menuBackground = loadImage("images_farm/background1.png");
+		title = loadImage("images/title.png");
+		menuBackground = loadImage("images/background1.png");
 		play = loadImage("Menu/play.png");
 		playHighlighted = loadImage("Menu/playHighlighted.png");
 		playClicked = loadImage("Menu/playClicked.png");
@@ -170,21 +170,21 @@ public class MatchIT extends GameEngine {
 	// load all images here
 	public void initLevel1() {
 		// background
-		background = loadImage("images_farm\\background2.png");
+		background = loadImage("images\\background2.png");
 		// circle
-		circleImage = loadImage("images_farm\\coin.png");
+		circleImage = loadImage("images\\coin.png");
 		// square
-		squareImage = loadImage("images_farm\\box1.png");
+		squareImage = loadImage("images\\box1.png");
 		// diamond
-		diamImage = loadImage("images_farm\\crystal.png");
+		diamImage = loadImage("images\\crystal.png");
 		// rectangle
-		rectImage = loadImage("images_farm\\box2.png");
+		rectImage = loadImage("images\\box2.png");
 		// heart
-		heartImage = loadImage("images_farm\\heart.png");
+		heartImage = loadImage("images\\heart.png");
 		// back button
-		backButton = loadImage("images_farm\\back.png");
-		backHovered = loadImage("images_farm\\backHover.png");
-		backClicked = loadImage("images_farm\\backClicked.png");
+		backButton = loadImage("images\\back.png");
+		backHovered = loadImage("images\\backHover.png");
+		backClicked = loadImage("images\\backClicked.png");
 	}
 	
 	public void updateLevel1(double dt) {
@@ -319,10 +319,10 @@ public class MatchIT extends GameEngine {
 	boolean homePressed, homeHover;
 
 	public void initGameOverScreen() {
-		gameOverBackground = loadImage("images_farm\\background3.png");
-		homeButton = loadImage("images_farm\\home.png");
-		homeClicked = loadImage("images_farm\\homeClick.png"); 
-		homeHighlighted = loadImage("images_farm\\homeHover.png");
+		gameOverBackground = loadImage("images\\background3.png");
+		homeButton = loadImage("images\\home.png");
+		homeClicked = loadImage("images\\homeClick.png"); 
+		homeHighlighted = loadImage("images\\homeHover.png");
 	}
 
 	public void updateGameOverScreen() {}

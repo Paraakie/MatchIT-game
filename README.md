@@ -8,8 +8,9 @@
   <li>Score Screen, where your final score is displayed; Score is based on Matched Pairs, wrong matched Pairs and time taken.</li>
 </ul>
 
+<br>
+<br>
 
-
-<p>Code by Chad Finch and Sven Gerhards.</p>
-<p>The Code File GameEngine was provided by Massey University</p>
-<p>Images and Audio is licensed material, you can find the license in the folders of the content</p>
+<p>Code by Chad Finch and Sven Gerhards.<br>
+The Code File GameEngine was provided by Massey University<br>
+Images and Audio is licensed material, you can find the license in the folders of the content</p>
